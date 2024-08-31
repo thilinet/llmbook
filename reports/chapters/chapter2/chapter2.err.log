@@ -25,10 +25,10 @@ print(attn.shape)
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_132181/653601419.py[0m in [0;36m<module>[0;34m[0m
-[0;32m----> 1[0;31m [0msha1[0m [0;34m=[0m [0mSingleHeadAttention1[0m[0;34m([0m[0mconfig[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      2[0m [0mattn[0m [0;34m=[0m [0msha1[0m[0;34m.[0m[0mforward[0m[0;34m([0m[0mx[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      3[0m [0mprint[0m[0;34m([0m[0mattn[0m[0;34m.[0m[0mshape[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+Cell [0;32mIn[4], line 1[0m
+[0;32m----> 1[0m sha1 [38;5;241m=[39m [43mSingleHeadAttention1[49m(config)
+[1;32m      2[0m attn [38;5;241m=[39m sha1[38;5;241m.[39mforward(x)
+[1;32m      3[0m [38;5;28mprint[39m(attn[38;5;241m.[39mshape)
 
 [0;31mNameError[0m: name 'SingleHeadAttention1' is not defined
 NameError: name 'SingleHeadAttention1' is not defined

@@ -183,14 +183,13 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 1 - Input to LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter2/chapter2.html">Chapter 2 - Transformer Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter4.html">Chapter 4 - Fine tuning a LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter5.html">Chapter 5 - Instruction Fine Tuning</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="../chapter6.html">Chapter 6 - Prompt Engineering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="../chapter9.html">Chapter 7 - Rag based applications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 6 - Artificial General Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 10- Artificial General Intelligence</a></li>
 </ul>
 
     </div>
@@ -386,10 +385,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sample-text-corpus">A Sample Text corpus</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-simplebooks">Structure of simplebooks</a></li>
 </ul>
@@ -416,13 +413,16 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-data-engineering">Pre-training data engineering</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">Data sources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">Data pipeline</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#privacy-and-eithical-cosiderations">Privacy and eithical cosiderations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-filtration">Data Filtration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplication">Deduplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Data quality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclustion">Conclustion</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
 </ul>
@@ -450,8 +450,9 @@ document.write(`
 </figure>
 <p>Before we understand the nueances involved in each of these steps,
 let us do a simple outline of what happens in each of these blocks using a no frill example.</p>
+</section>
 <section id="no-frill-example">
-<span id="reference-nofrill"></span><h3>No frill example<a class="headerlink" href="#no-frill-example" title="Link to this heading">#</a></h3>
+<span id="reference-nofrill"></span><h2>No frill example<a class="headerlink" href="#no-frill-example" title="Link to this heading">#</a></h2>
 <p>A causal large language model, also refered to autoregresive model is trained to do the next word prediction. From a vocabulary of words, given a sequence of words, the causal model predicts the most probable next word from the vocabulary. Causal model are trained on a bunch of documents. Documents are composed of words and each word is composed of characters. In our example, word will be lowest denomination of operation.We use the term corpus to refer to these input documents. The lowest denomination in this corpus is word, typically referred called tokens. The set of unique tokens in the corpus is called vocabulary.</p>
 <p>Let us take a sample paragraph, our corpus for this exercise, and apply a regular expression to split the paragraph by whitespace or special characters. The resultant list of words forms the tokens for this corpus.</p>
 <div class="cell docutils container">
@@ -493,7 +494,7 @@ blackslash as raw character and not as escape character.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Are&#39;: 0, &#39;try&#39;: 1, &#39;smallest&#39;: 2, &#39;the&#39;: 3, &#39;,&#39;: 4, &#39;interactions&#39;: 5, &#39;how&#39;: 6, &#39;everything&#39;: 7, &#39;between&#39;: 8, &#39;Broadly&#39;: 9, &#39;different&#39;: 10, &#39;physics&#39;: 11, &#39;?&#39;: 12, &#39;conceptual&#39;: 13, &#39;involves&#39;: 14, &#39;universe&#39;: 15, &#39;in&#39;: 16, &#39;both&#39;: 17, &#39;physical&#39;: 18, &#39;particles&#39;: 19, &#39;works&#39;: 20, &#39;to&#39;: 21, &#39;interested&#39;: 22, &#39;and&#39;: 23, &#39;models&#39;: 24, &#39;studying&#39;: 25, &#39;subatomic&#39;: 26, &#39;big&#39;: 27, &#39;entire&#39;: 28, &#39;you&#39;: 29, &#39;mathematical&#39;: 30, &#39;describe&#39;: 31, &#39;small&#39;: 32, &#39;our&#39;: 33, &#39;(&#39;: 34, &#39;that&#39;: 35, &#39;used&#39;: 36, &#39;develop&#39;: 37, &#39;understanding&#39;: 38, &#39;from&#39;: 39, &#39;)&#39;: 40, &#39;can&#39;: 41, &#39;.&#39;: 42, &#39;Physicists&#39;: 43, &#39;of&#39;: 44, &#39;entities&#39;: 45, &#39;existence&#39;: 46, &#39;at&#39;: 47, &#39;scales&#39;: 48, &#39;study&#39;: 49, &#39;be&#39;: 50, &#39;extend&#39;: 51}
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;works&#39;: 0, &#39;(&#39;: 1, &#39;Physicists&#39;: 2, &#39;scales&#39;: 3, &#39;study&#39;: 4, &#39;extend&#39;: 5, &#39;be&#39;: 6, &#39;Broadly&#39;: 7, &#39;of&#39;: 8, &#39;physical&#39;: 9, &#39;existence&#39;: 10, &#39;how&#39;: 11, &#39;used&#39;: 12, &#39;studying&#39;: 13, &#39;understanding&#39;: 14, &#39;mathematical&#39;: 15, &#39;models&#39;: 16, &#39;both&#39;: 17, &#39;physics&#39;: 18, &#39;entities&#39;: 19, &#39;that&#39;: 20, &#39;Are&#39;: 21, &#39;?&#39;: 22, &#39;universe&#39;: 23, &#39;different&#39;: 24, &#39;between&#39;: 25, &#39;)&#39;: 26, &#39;interested&#39;: 27, &#39;everything&#39;: 28, &#39;and&#39;: 29, &#39;at&#39;: 30, &#39;you&#39;: 31, &#39;entire&#39;: 32, &#39;conceptual&#39;: 33, &#39;,&#39;: 34, &#39;can&#39;: 35, &#39;subatomic&#39;: 36, &#39;develop&#39;: 37, &#39;interactions&#39;: 38, &#39;our&#39;: 39, &#39;in&#39;: 40, &#39;big&#39;: 41, &#39;small&#39;: 42, &#39;involves&#39;: 43, &#39;try&#39;: 44, &#39;the&#39;: 45, &#39;from&#39;: 46, &#39;smallest&#39;: 47, &#39;.&#39;: 48, &#39;particles&#39;: 49, &#39;describe&#39;: 50, &#39;to&#39;: 51}
 </pre></div>
 </div>
 </div>
@@ -518,7 +519,7 @@ simplified example.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[15, 20, 47, 10, 48]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[23, 0, 30, 24, 3]
 </pre></div>
 </div>
 </div>
@@ -541,11 +542,11 @@ simplified example.</p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vocabulary size 51
 Word Embedding shape (51, 5)
-[[0.24217127 0.4895298  0.05846666 0.33636977 0.91755424]
- [0.42416062 0.68562903 0.88463391 0.72601295 0.62484812]
- [0.46895522 0.42249376 0.5361452  0.76493549 0.50700275]
- [0.14510643 0.24248175 0.54010953 0.41243876 0.36974284]
- [0.34719597 0.31372874 0.94155603 0.45545349 0.68921249]]
+[[0.65509191 0.72861374 0.18174827 0.75105462 0.24848871]
+ [0.43958794 0.09306868 0.21213484 0.6270907  0.09320111]
+ [0.14366106 0.03456825 0.90221324 0.57790769 0.19774628]
+ [0.84462293 0.36868777 0.30664013 0.036832   0.78970643]
+ [0.86832999 0.47091175 0.36086558 0.80467974 0.47012965]]
 </pre></div>
 </div>
 </div>
@@ -562,11 +563,11 @@ the columns represent the embedding for those words. The embeddings are random r
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5, 5)
-[[0.05004503 0.36282998 0.28445894 0.03218699 0.34808098]
- [0.43702596 0.45897977 0.44983999 0.20191379 0.8894771 ]
- [0.53389632 0.58028317 0.75700156 0.77105781 0.6328717 ]
- [0.75330164 0.23576875 0.87054955 0.20799213 0.27219933]
- [0.46053796 0.32578757 0.06738546 0.43310685 0.70020016]]
+[[0.90643573 0.66430809 0.94855648 0.2812909  0.93685589]
+ [0.65509191 0.72861374 0.18174827 0.75105462 0.24848871]
+ [0.98012265 0.42672971 0.71502985 0.68906824 0.86231398]
+ [0.22391595 0.63076813 0.9969282  0.84038303 0.17579164]
+ [0.84462293 0.36868777 0.30664013 0.036832   0.78970643]]
 </pre></div>
 </div>
 </div>
@@ -587,8 +588,8 @@ Let us assume a simple case here. The input size to our LLM is fixed, say 10. We
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.60079681, 0.34200229, 0.08476284, 0.88270262, 0.69083459],
-       [0.43599163, 0.34487251, 0.41266311, 0.68373054, 0.48059755]])
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.44358316, 0.04038099, 0.84814682, 0.02855021, 0.51154191],
+       [0.32379892, 0.49001379, 0.76407302, 0.87029329, 0.2034981 ]])
 </pre></div>
 </div>
 </div>
@@ -626,8 +627,8 @@ Let us assume a simple case here. The input size to our LLM is fixed, say 10. We
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a feature : [9, 4, 11, 14, 3, 49, 44, 7, 16, 18]
-a label   : [4, 11, 14, 3, 49, 44, 7, 16, 18, 46]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a feature : [7, 34, 18, 43, 45, 4, 8, 28, 40, 9]
+a label   : [34, 18, 43, 45, 4, 8, 28, 40, 9, 10]
 </pre></div>
 </div>
 </div>
@@ -649,17 +650,16 @@ a label   : [4, 11, 14, 3, 49, 44, 7, 16, 18, 46]
 <p><a class="reference external" href="https://ai.meta.com/blog/meta-llama-3/">https://ai.meta.com/blog/meta-llama-3/</a></p>
 </div>
 </section>
-</section>
 <section id="a-sample-text-corpus">
 <h2>A Sample Text corpus<a class="headerlink" href="#a-sample-text-corpus" title="Link to this heading">#</a></h2>
-<p>Publicly and privately available LLMs leverage the text data available in world wide web to do the pre-training. In the no frill section, we showed how the features and labels needed to train an LLM comes from the same source, sliding the features leaves us with the label. This can done in an unsupervised manner, saving the labor needed to create large training dataset. In the GPT-1 paper <span id="id1">[<a class="reference internal" href="../../intro.html#id2" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, the authors call this training process as unsupervised pre-training. GPT-1 was trained with Bookcorpus dataset <span id="id2">[<a class="reference internal" href="../../intro.html#id4" title="Yukun Zhu, Ryan Kiros, Richard Zemel, Ruslan Salakhutdinov, Raquel Urtasun, Antonio Torralba, and Sanja Fidler. Aligning books and movies: towards story-like visual explanations by watching movies and reading books. 2015. arXiv:1506.06724.">ZKZ+15</a>]</span>.</p>
+<p>Publicly and privately available LLMs leverage the text data available in world wide web to do the pre-training. In the no frill section, we showed how the features and labels needed to train an LLM comes from the same source, sliding the features leaves us with the label. This can done in an unsupervised manner, saving the labor needed to create large training dataset. In the GPT-1 paper <span id="id1">[<a class="reference internal" href="../../intro.html#id3" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, the authors call this training process as unsupervised pre-training. GPT-1 was trained with Bookcorpus dataset <span id="id2">[<a class="reference internal" href="../../intro.html#id5" title="Yukun Zhu, Ryan Kiros, Richard Zemel, Ruslan Salakhutdinov, Raquel Urtasun, Antonio Torralba, and Sanja Fidler. Aligning books and movies: towards story-like visual explanations by watching movies and reading books. 2015. arXiv:1506.06724.">ZKZ+15</a>]</span>.</p>
 <p>Loading input text from desparate sources is a tedious undertaking. LLMs are trained on Terra Bytes of data. Complex data pipelines are orchestrated to
-extract and validate the data. Details of those pipelines are beyond the scope of the book. Here is a quote from <span id="id3">[<a class="reference internal" href="../../intro.html#id3" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, Dan Bikel, Lukas Blecher, Cristian Canton Ferrer, Moya Chen, Guillem Cucurull, David Esiobu, Jude Fernandes, Jeremy Fu, Wenyin Fu, Brian Fuller, Cynthia Gao, Vedanuj Goswami, Naman Goyal, Anthony Hartshorn, Saghar Hosseini, Rui Hou, Hakan Inan, Marcin Kardas, Viktor Kerkez, Madian Khabsa, Isabel Kloumann, Artem Korenev, Punit Singh Koura, Marie-Anne Lachaux, Thibaut Lavril, Jenya Lee, Diana Liskovich, Yinghai Lu, Yuning Mao, Xavier Martinet, Todor Mihaylov, Pushkar Mishra, Igor Molybog, Yixin Nie, Andrew Poulton, Jeremy Reizenstein, Rashi Rungta, Kalyan Saladi, Alan Schelten, Ruan Silva, Eric Michael Smith, Ranjan Subramanian, Xiaoqing Ellen Tan, Binh Tang, Ross Taylor, Adina Williams, Jian Xiang Kuan, Puxin Xu, Zheng Yan, Iliyan Zarov, Yuchen Zhang, Angela Fan, Melanie Kambadur, Sharan Narang, Aurelien Rodriguez, Robert Stojnic, Sergey Edunov, and Thomas Scialom. Llama 2: open foundation and fine-tuned chat models. 2023. arXiv:2307.09288.">TMS+23</a>]</span>, “Our training corpus includes a new mix of data from publicly available sources, which does not include data
+extract and validate the data. Details of those pipelines are beyond the scope of the book. Here is a quote from <span id="id3">[<a class="reference internal" href="../../intro.html#id4" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, Dan Bikel, Lukas Blecher, Cristian Canton Ferrer, Moya Chen, Guillem Cucurull, David Esiobu, Jude Fernandes, Jeremy Fu, Wenyin Fu, Brian Fuller, Cynthia Gao, Vedanuj Goswami, Naman Goyal, Anthony Hartshorn, Saghar Hosseini, Rui Hou, Hakan Inan, Marcin Kardas, Viktor Kerkez, Madian Khabsa, Isabel Kloumann, Artem Korenev, Punit Singh Koura, Marie-Anne Lachaux, Thibaut Lavril, Jenya Lee, Diana Liskovich, Yinghai Lu, Yuning Mao, Xavier Martinet, Todor Mihaylov, Pushkar Mishra, Igor Molybog, Yixin Nie, Andrew Poulton, Jeremy Reizenstein, Rashi Rungta, Kalyan Saladi, Alan Schelten, Ruan Silva, Eric Michael Smith, Ranjan Subramanian, Xiaoqing Ellen Tan, Binh Tang, Ross Taylor, Adina Williams, Jian Xiang Kuan, Puxin Xu, Zheng Yan, Iliyan Zarov, Yuchen Zhang, Angela Fan, Melanie Kambadur, Sharan Narang, Aurelien Rodriguez, Robert Stojnic, Sergey Edunov, and Thomas Scialom. Llama 2: open foundation and fine-tuned chat models. 2023. arXiv:2307.09288.">TMS+23</a>]</span>, “Our training corpus includes a new mix of data from publicly available sources, which does not include data
 from Meta’s products or services. We made an effort to remove data from certain sites known to contain a
 high volume of personal information about private individuals. We trained on 2 trillion tokens of data as this
 provides a good performance–cost trade-off, up-sampling the most factual sources in an effort to increase
 knowledge and dampen hallucinations.”</p>
-<p>To give an idea about loading the corpus, we will use Simplebooks <span id="id4">[<a class="reference internal" href="../../intro.html#id5" title="Huyen Nguyen. Simplebooks: long-term dependency book dataset with simplified english vocabulary for word-level language modeling. 2019. arXiv:1911.12391.">Ngu19</a>]</span>. After downloading the dataset, we will show how to leverage hugginface’s dataset libary to load the dataset.</p>
+<p>To give an idea about loading the corpus, we will use Simplebooks <span id="id4">[<a class="reference internal" href="../../intro.html#id6" title="Huyen Nguyen. Simplebooks: long-term dependency book dataset with simplified english vocabulary for word-level language modeling. 2019. arXiv:1911.12391.">Ngu19</a>]</span>. After downloading the dataset, we will show how to leverage hugginface’s dataset libary to load the dataset.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
@@ -684,9 +684,9 @@ knowledge and dampen hallucinations.”</p>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_132157</span><span class="o">/</span><span class="mf">4065309741.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">14</span> 
-<span class="g g-Whitespace">     </span><span class="mi">15</span> 
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span> <span class="n">line</span> <span class="mi">16</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>     <span class="n">zipfile</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished downloading and extracting simplebooks.zip&quot;</span><span class="p">)</span>
 <span class="ne">---&gt; </span><span class="mi">16</span> <span class="n">download_simplebooks</span><span class="p">()</span>
 
 <span class="ne">TypeError</span>: download_simplebooks() missing 1 required positional argument: &#39;destination&#39;
@@ -799,7 +799,7 @@ their encodings [131695, 105703, 98932, 97156, 63612]
 <h2>Tokenization Pipeline<a class="headerlink" href="#tokenization-pipeline" title="Link to this heading">#</a></h2>
 <p>The tokenization begins with raw input text source / corpus and ends with a dictionary of tokens and their associated token ids. Token ids are integers. After this given a new text, the pipeline should be able to spit out the associated tokens. Similarly, given a list of tokens, the pipeline should be able to convert it back to text without any loss. The below figure illustrates the various steps involved in this pipeline.</p>
 <figure class="align-default" id="encoding">
-<span id="reference-tokenization"></span><a class="reference internal image-reference" href="../../_images/TokenEncoding.jpg"><img alt="../../_images/TokenEncoding.jpg" src="../../_images/TokenEncoding.jpg" style="height: 250px;" /></a>
+<span id="reference-tokenization"></span><a class="reference internal image-reference" href="images/chapter1/TokenEncoding.jpg"><img alt="images/chapter1/TokenEncoding.jpg" src="images/chapter1/TokenEncoding.jpg" style="height: 250px;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 2 </span><span class="caption-text">Steps in Tokenization</span><a class="headerlink" href="#encoding" title="Link to this image">#</a></p>
 </figcaption>
@@ -821,7 +821,7 @@ Issues may arise when a character can be represented by a single code point or a
 is the process of normalizing a unicode encoded string into a canonical form.</p>
 <p>For the more curious please read the <a class="reference external" href="https://www.smashingmagazine.com/2012/06/all-about-unicode-utf8-character-sets/">article</a> to get a little history about ASCII, latin-1, unicode.</p>
 </div>
-<p>Quoting from GPT-1 paper <span id="id5">[<a class="reference internal" href="../../intro.html#id2" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, “We use the ftfy library2 to clean the raw text in BooksCorpus, standardize some punctuation and whitespace, and use the spaCy tokenizer”.</p>
+<p>Quoting from GPT-1 paper <span id="id5">[<a class="reference internal" href="../../intro.html#id3" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, “We use the ftfy library2 to clean the raw text in BooksCorpus, standardize some punctuation and whitespace, and use the spaCy tokenizer”.</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://ftfy.readthedocs.io/en/latest/index.html">ftfy - fixes text for you</a></p></li>
 <li><p><a class="reference external" href="https://spacy.io/">Spacy</a></p></li>
@@ -970,7 +970,7 @@ the Spacy library to tokenize. Let us take a sample from our Simplebooks dataset
 </section>
 <section id="tokenizer-models-dictionary-training">
 <h3>Tokenizer models - Dictionary Training<a class="headerlink" href="#tokenizer-models-dictionary-training" title="Link to this heading">#</a></h3>
-<p>One may wonder the need for any subsequent processing in tokenization pipeline. The pre-tokenization output can be used directly to build a Vocabulary. The set of unique tokens gathered after running the tokenizer over the input corpus is the vocabulary. The transformerXL model <span id="id6">[<a class="reference internal" href="../../intro.html#id8" title="Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc V. Le, and Ruslan Salakhutdinov. Transformer-xl: attentive language models beyond a fixed-length context. 2019. arXiv:1901.02860.">DYY+19</a>]</span> has a vocabulary size of 250K, compared to Llama which has a size of 32K</p>
+<p>One may wonder the need for any subsequent processing in tokenization pipeline. The pre-tokenization output can be used directly to build a Vocabulary. The set of unique tokens gathered after running the tokenizer over the input corpus is the vocabulary. The transformerXL model <span id="id6">[<a class="reference internal" href="../../intro.html#id9" title="Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc V. Le, and Ruslan Salakhutdinov. Transformer-xl: attentive language models beyond a fixed-length context. 2019. arXiv:1901.02860.">DYY+19</a>]</span> has a vocabulary size of 250K, compared to Llama which has a size of 32K</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>TransformerXL uses space and punctuation to tokenize the text. Their vocabulary size is around 250K. Here is the link
@@ -1015,7 +1015,7 @@ Large language models, the new kid in the block is creating wonders.            
 <p>In this book we will cover Byte pair encoding. Curious readers can go through <a class="reference external" href="https://huggingface.co/docs/transformers/en/tokenizer_summary">https://huggingface.co/docs/transformers/en/tokenizer_summary</a> to get a summary of other subword algorithms.</p>
 <section id="bye-pair-encoding">
 <h4>Bye pair encoding<a class="headerlink" href="#bye-pair-encoding" title="Link to this heading">#</a></h4>
-<p>Byte pair encoding was first introduced for word segmentation in the paper Neural Machine Translation of Rare Words with Subword Units <span id="id7">[<a class="reference internal" href="../../intro.html#id9" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>. It is a sub-word level method. The original algorithm is attribtued to Philip Gage. 1994. A New Algorithm for Data Com-pression. C Users J., 12(2):23–38, February. It is a data compression algorithm working iteratively. Say for example, we have the following string</p>
+<p>Byte pair encoding was first introduced for word segmentation in the paper Neural Machine Translation of Rare Words with Subword Units <span id="id7">[<a class="reference internal" href="../../intro.html#id10" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>. It is a sub-word level method. The original algorithm is attribtued to Philip Gage. 1994. A New Algorithm for Data Com-pression. C Users J., 12(2):23–38, February. It is a data compression algorithm working iteratively. Say for example, we have the following string</p>
 <p>aaaabdaaabac</p>
 <p>Iteratively, let us now replace the most frequent pairs with another symbol not present in the string. For example, we replace the pair ‘aa’ with Z. The new
 string will be ZabdZabac. ‘Za’ is the most frequently occuring pair now. Let us replace it with X. We continue this way till the string reaches the desired size.
@@ -1086,7 +1086,7 @@ Iteration 3
 </div>
 </div>
 <p>BPE begins with the output from pre-tokenizer. For each token, a map of token with its constituent characters followed by a end of word symbol and its frequency in the input corpus are retrieved.</p>
-<p>Let us see the example from <span id="id8">[<a class="reference internal" href="../../intro.html#id9" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>.</p>
+<p>Let us see the example from <span id="id8">[<a class="reference internal" href="../../intro.html#id10" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span>  <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
@@ -1895,6 +1895,112 @@ torch.Size([2, 50])
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#### Sinusoid embedding</span>
+
+<span class="err">```</span><span class="p">{</span><span class="n">figure</span><span class="p">}</span> <span class="o">../../</span><span class="n">images</span><span class="o">/</span><span class="n">chapter1</span><span class="o">/</span><span class="n">sinusoidal_formula</span><span class="o">.</span><span class="n">png</span>
+<span class="o">---</span>
+<span class="n">height</span><span class="p">:</span> <span class="mi">350</span><span class="n">px</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">Sinusoidal</span> <span class="n">Embedding</span> <span class="n">Formula</span>
+<span class="o">---</span>
+<span class="n">Sinusoidal</span> <span class="n">Embedding</span> <span class="n">Formula</span>
+<span class="err">```</span>
+
+<span class="err">```</span><span class="p">{</span><span class="n">figure</span><span class="p">}</span> <span class="o">../../</span><span class="n">images</span><span class="o">/</span><span class="n">chapter1</span><span class="o">/</span><span class="n">sinusoidal</span><span class="o">.</span><span class="n">png</span>
+<span class="o">---</span>
+<span class="n">height</span><span class="p">:</span> <span class="mi">350</span><span class="n">px</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">Sinusoidal</span> <span class="n">Embedding</span>
+<span class="o">---</span>
+<span class="n">Sinusoidal</span> <span class="n">Embedding</span>
+<span class="err">```</span>
+
+
+<span class="err">```</span><span class="p">{</span><span class="n">figure</span><span class="p">}</span> <span class="o">../../</span><span class="n">images</span><span class="o">/</span><span class="n">chapter1</span><span class="o">/</span><span class="n">sinusoidal</span><span class="o">.</span><span class="n">png</span>
+<span class="o">---</span>
+<span class="n">height</span><span class="p">:</span> <span class="mi">350</span><span class="n">px</span>
+<span class="n">name</span><span class="p">:</span> <span class="n">Sinusoidal</span> <span class="n">Embedding</span>
+<span class="o">---</span>
+<span class="n">Sinusoidal</span> <span class="n">Embedding</span>
+<span class="err">```</span>
+
+<span class="n">The</span> <span class="n">figure</span> <span class="ow">is</span> <span class="n">borrowed</span> <span class="kn">from</span> <span class="p">{</span><span class="n">cite</span><span class="p">}</span> <span class="err">`</span><span class="n">khalidfayez</span><span class="err">`</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pe</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">context_window</span><span class="p">,</span><span class="n">embedding_dim</span><span class="p">)</span>
+<span class="n">pe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([50, 16])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">embedding_dim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([0, 1, 2, 3])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pe</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">context_window</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+<span class="n">pe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0.],
+        [0., 0., 0., 0., 0., 0., 0., 0.]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 10000^(2i/d_model), i is the index of embedding</span>
+
+<span class="n">denominators</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">freq</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">embedding_dim</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pe</span><span class="p">[:,</span><span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">positions</span><span class="o">/</span><span class="n">denominators</span><span class="p">)</span>
+<span class="n">pe</span><span class="p">[:,</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">positions</span><span class="o">/</span><span class="n">denominators</span><span class="p">)</span>
+<span class="n">pe</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0.0000,  1.0000,  0.0000,  1.0000],
+        [ 0.8415,  0.5403,  0.0100,  1.0000],
+        [ 0.9093, -0.4161,  0.0200,  0.9998],
+        [ 0.1411, -0.9900,  0.0300,  0.9996],
+        [-0.7568, -0.6536,  0.0400,  0.9992],
+        [-0.9589,  0.2837,  0.0500,  0.9988]])
+</pre></div>
+</div>
+</div>
+</div>
 <p>We encoded the absolute position of each toke thus the name absolute positoinal embedding. However one drawback here is each position’s embedding is independent of the other. From a models perspective it will not know how far is position 500 from 2. To summarize position embedding should be monotonic. The more two tokens are closer to each other, they should influence each other.</p>
 <section id="relative-position-embedding">
 <h3>Relative Position embedding<a class="headerlink" href="#relative-position-embedding" title="Link to this heading">#</a></h3>
@@ -1903,6 +2009,7 @@ torch.Size([2, 50])
 </section>
 <section id="pre-training-data-engineering">
 <h2>Pre-training data engineering<a class="headerlink" href="#pre-training-data-engineering" title="Link to this heading">#</a></h2>
+<p>Now we understand some of the technology which goes into producing our LLM inputs. In this section let us quickly look into how this is done at a bigger scale. Thanks to HuggingFace and Facebook, documentation on synthetic datasets cosmopedia, <a class="reference external" href="https://huggingface.co/blog/cosmopedia">https://huggingface.co/blog/cosmopedia</a>, and llama3 paper <span id="id10">[]</span>. We will do a quick overview in this section. Readers are encouraged to read through those sources for a detailed overview.</p>
 <figure class="align-default" id="data-engineering">
 <a class="reference internal image-reference" href="../../_images/data_pipeline.png"><img alt="../../_images/data_pipeline.png" src="../../_images/data_pipeline.png" style="height: 350px;" /></a>
 <figcaption>
@@ -1912,35 +2019,139 @@ torch.Size([2, 50])
 <p>The typical approach is concat-and-chunk. They convert text datasets with variable document lengths into sequences with a fixed target length. First we randomly shuffle and concatenate all tokenized documents. Consequtive concatenated documents are separated by a special token ‘<EOT>’, allowing models to discover document boundaries. We then chunk the concatenated sequence into subsequences with a target sequence length. For example 2048 and 4096 for llama1 and llama2</p>
 <section id="data-sources">
 <h3>Data sources<a class="headerlink" href="#data-sources" title="Link to this heading">#</a></h3>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Common datasources include The Pile, RefinedWeb, RedPajma and DOLMA.
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Diveristy in the dataset used for training is an import factor in building a good large language model. Web data is the most common used data source. Though Open AI and Google don&#39;t reveal exactly the training data used, others like Facebook have published the data sources used to train their models. The below figure from Ollama 1 paper {cite} `touvron2023llamaopenefficientfoundation` provides a list of data sources used by llama.
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="images/chapter1/llama_data_sources.png" src="images/chapter1/llama_data_sources.png" />
+</figure>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Common Crawl is a non profit organization. https://commoncrawl.org/overview. Since 2008, they have been crawling the web and provding the data for free for public consumption. The data is hosted in amazon s3 buckets and are free to access.
+
+2. Redpajama from together.ai is a filtered thirty trillion tokens from 84 common crawl dumps.https://
+github.com/togethercomputer/RedPajama-Data?tab=readme-ov-file
+
+3. Pile is another 800GB of diversed text files. https://pile.eleuther.ai/
+
+4. Abh Dhabi Goverment&#39;s Technology Innovation institute releases Falcon family of models. RefinedWeb is the dataset created to train Falcon models. They have released a subset of this dataset in Hugginface,https://huggingface.co/datasets/tiiuae/falcon-refinedweb
+
+5. C4 is a 750 GB English corpus derived from the Common Crawl. It uses heuristic methods to extract only natural language data while removing all gibberish text. C4 has also undergone heavy deduplication to improve its quality. 
+
+6.Starcoder Data is a programming-centric dataset built from 783 GB of code written in 86 programming languages. It also contains 250 billion tokens extracted from GitHub and Jupyter Notebooks. Salesforce CodeGen, Starcoder, and StableCode were trained with Starcoder Data to enable better program synthesis.
+</pre></div>
+</div>
+<p>For diversification, other curated, tailored datasets are included.</p>
+</section>
+<section id="data-filtration">
+<h3>Data Filtration<a class="headerlink" href="#data-filtration" title="Link to this heading">#</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>T
+</pre></div>
+</div>
+<section id="data-quality">
+<h4>Data quality<a class="headerlink" href="#data-quality" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>A classifier to classify a document as high quality or low quality. Then documents are passed through this classifier and only high quality documents are filtered.</p></li>
+</ol>
+</section>
+<section id="deduplication">
+<h4>Deduplication<a class="headerlink" href="#deduplication" title="Link to this heading">#</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>2. MinHashLSH techniques are used for deduplication. Deduplication is done with the document and across the documents.
 </pre></div>
 </div>
 </section>
-<section id="data-pipeline">
-<h3>Data pipeline<a class="headerlink" href="#data-pipeline" title="Link to this heading">#</a></h3>
-<p>Filtration, deduplication, diversifacation.</p>
-<ol class="arabic simple">
-<li><p>A classifier to classify a document as high quality or low quality. Then documents are passed through this classifier and only high quality documents are filtered.</p></li>
-<li><p>MinHashLSH techniques are used for deduplication. Deduplication is done with the document and across the documents.</p></li>
-<li><p>For diversification, other curated, tailored datasets are included.</p></li>
-</ol>
-</section>
-<section id="data-quality">
-<h3>Data quality<a class="headerlink" href="#data-quality" title="Link to this heading">#</a></h3>
+<section id="id11">
+<h4>Data quality<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Heuristics are used
+</pre></div>
+</div>
 </section>
 <section id="data-bias">
-<h3>Data Bias<a class="headerlink" href="#data-bias" title="Link to this heading">#</a></h3>
+<h4>Data Bias<a class="headerlink" href="#data-bias" title="Link to this heading">#</a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>PII removal
+</pre></div>
+</div>
 </section>
-<section id="privacy-and-eithical-cosiderations">
-<h3>Privacy and eithical cosiderations<a class="headerlink" href="#privacy-and-eithical-cosiderations" title="Link to this heading">#</a></h3>
+</section>
 </section>
 <section id="synthetic-data-generation-through-llm">
-<h3>Synthetic data generation through LLM<a class="headerlink" href="#synthetic-data-generation-through-llm" title="Link to this heading">#</a></h3>
+<h2>Synthetic data generation through LLM<a class="headerlink" href="#synthetic-data-generation-through-llm" title="Link to this heading">#</a></h2>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Microsoft Phi models were mostly trained on synthetic data.
 Cosmopedia a dataset consisting of synthetic textbooks, blog posts, stories, posts and WikiHow articles generated by Mixtral-8x7B-Instruct-v0.1. Has 30 million files and 25 billion tokens.
 </pre></div>
 </div>
-</section>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Language identification</span>
+<span class="c1"># Example from HuggingFace</span>
+<span class="c1"># https://huggingface.co/facebook/fasttext-language-identification</span>
+
+<span class="kn">import</span> <span class="nn">fasttext</span>
+<span class="kn">from</span> <span class="nn">huggingface_hub</span> <span class="kn">import</span> <span class="n">hf_hub_download</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+
+
+<span class="k">def</span> <span class="nf">load_fasttext_model</span><span class="p">():</span>
+    <span class="n">model_path</span> <span class="o">=</span> <span class="n">hf_hub_download</span><span class="p">(</span><span class="n">repo_id</span><span class="o">=</span>
+                                 <span class="s2">&quot;facebook/fasttext-language-identification&quot;</span><span class="p">,</span> 
+                                 <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;model.bin&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">fasttext</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+
+<span class="k">def</span> <span class="nf">get_spanish_text</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;&quot;Y de un nuevo esfuerzo Neira está de pié; tomando a su hijo lo coloca</span>
+<span class="s2">sobre el mulato que pacientemente tasca el freno. En seguida, reune</span>
+<span class="s2">todas sus fuerzas y poniendo un pié sobre el estribo logra montar</span>
+<span class="s2">dolorosamente no sin que se le escape un quejido de angustia y</span>
+<span class="s2">sufrimiento.This is a spanish example&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">detect_language</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">t</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">spanish_extract</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="n">lang_detect_model</span> <span class="o">=</span> <span class="n">load_fasttext_model</span><span class="p">()</span>
+<span class="n">spanish_extract</span> <span class="o">=</span> <span class="n">get_spanish_text</span><span class="p">()</span>
+
+
+<span class="n">detect_language</span><span class="p">(</span><span class="n">lang_detect_model</span><span class="p">,</span> <span class="n">spanish_extract</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>((&#39;__label__spa_Latn&#39;,), array([0.99999499]))
+((&#39;__label__spa_Latn&#39;,), array([0.98788273]))
+((&#39;__label__spa_Latn&#39;,), array([0.99992168]))
+((&#39;__label__spa_Latn&#39;,), array([0.99937087]))
+((&#39;__label__eng_Latn&#39;,), array([1.00000644]))
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning : `load_model` does not return WordVectorModel or SupervisedModel any more, but a `FastText` object which is very similar.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">(</span><span class="n">spanish_extract</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_75303</span><span class="o">/</span><span class="mf">2628126004.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">model</span><span class="p">(</span><span class="n">spanish_extract</span><span class="p">)</span>
+
+<span class="ne">TypeError</span>: &#39;_FastText&#39; object is not callable
+</pre></div>
+</div>
+</div>
+</div>
 </section>
 <section id="conclustion">
 <h2>Conclustion<a class="headerlink" href="#conclustion" title="Link to this heading">#</a></h2>
@@ -2014,10 +2225,8 @@ Cosmopedia a dataset consisting of synthetic textbooks, blog posts, stories, pos
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sample-text-corpus">A Sample Text corpus</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-simplebooks">Structure of simplebooks</a></li>
 </ul>
@@ -2044,13 +2253,16 @@ Cosmopedia a dataset consisting of synthetic textbooks, blog posts, stories, pos
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-data-engineering">Pre-training data engineering</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">Data sources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">Data pipeline</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#privacy-and-eithical-cosiderations">Privacy and eithical cosiderations</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-filtration">Data Filtration</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#deduplication">Deduplication</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Data quality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclustion">Conclustion</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
 </ul>

@@ -1,0 +1,1119 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 4 - Fine tuning a LLM &#8212; Learn Large Language Models Fast</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chapter4/chapter4';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/llm_t.png" class="logo__image only-light" alt="Learn Large Language Models Fast - Home"/>
+    <script>document.write(`<img src="../../_static/llm_t.png" class="logo__image only-dark" alt="Learn Large Language Models Fast - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Learn Large Language Models Fast
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chapter1/chapter1.html">Chapter 1 - Input to LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2/chapter2.html">Chapter 2 - Transformer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter6.html">Chapter 6 - Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter9.html">Chapter 7 - Rag based applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 10- Artificial General Intelligence</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapters/chapter4/chapter4.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chapter4/chapter4.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 4 - Fine tuning a LLM</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-fine-tune">Full fine tune</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-fine-tuning">Full fine-tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezing-certain-layers">Freezing certain layers</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chapter-4-fine-tuning-a-llm">
+<h1>Chapter 4 - Fine tuning a LLM<a class="headerlink" href="#chapter-4-fine-tuning-a-llm" title="Link to this heading">#</a></h1>
+<p>Vision models popularized transfer learning. Transfer learning is taking an pre-trained model and training on it to perform new tasks. I hope its not blashphemy to say Fine tuning is the new name for transfer learning in LLM world. We will look into fine tuning an existing large language model in this chapter. For those from vision domain, will relate to freezing some layers in the source model and then perform transfer learning. The weights of the frozen layers are untouched, only those layers left unfrozen are modified. In some cases of transfer learning new layers are added to the existing layers are those are trained. Most of those concepts apply to fine tuning LLMs.</p>
+<p>LLMs pre-trained on large corpus exibit in-context learning capability. Models like GPT-4, Gemini can perform new task on which it was not previous <a class="reference external" href="http://trained.By">trained.By</a> providing a prompt which comprises of few examples of the target task, these LLMs should perform the required job. We will see more about in-context learning in a later chapter.</p>
+<p>So when do we fine tune? Say you are building a document summarization application for your domain. Your compnay does not have enough budget to purchase copilot or openai’s API to access a high performance large language model. You end up picking a small language model (unlucky you, your company denies additional infrastructure, no 8 GPU machines for you to host your model). You try your hands with prompt engineering this small language model hoping to leverage incontext learning ability. No luck. Fine tuning is the answer in these scenario.</p>
+<p>In full fine tuning, we allow the training to modify all weights in all the layers of the original model. This is very similar to our pre-training in last chapter, expect we do a full training for very small number of epochs using the new dataset. We will be introducing the transformers library from HuggingFace. For training, again we use the Trainer API from HuggingFace. HuggingFace is one of the fastest growing LLM ecosystem. They have most of the open source models and everyday contributors are adding newer models. As an LLM developer we believe HuggingFace transformers will be a good tool in your toolbox. Recently hugging face released a small LLM model SmoLLM trained completely on synthetic data. We train this model on Fyodor Dostoveskeys’ The Brothers Karmazov novel.</p>
+<p>Text classification systems are ubiquotous now. LLMs can be fine tuned to perform text classification tasks. The output of the</p>
+<section id="full-fine-tune">
+<h2>Full fine tune<a class="headerlink" href="#full-fine-tune" title="Link to this heading">#</a></h2>
+<p>In this section, we will load a HuggingFace Model and do a complete finetuning with a text datasource.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">save_directory</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="s2">&quot;bin&quot;</span><span class="p">,</span><span class="s2">&quot;chapter4&quot;</span><span class="p">,</span><span class="s2">&quot;fullfinetune&quot;</span><span class="p">))</span>
+<span class="n">data_directory</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">(),</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;chapter4&quot;</span><span class="p">))</span>
+<span class="n">data_file_name</span> <span class="o">=</span> <span class="s2">&quot;brothers.txt&quot;</span>
+<span class="n">data_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_directory</span><span class="p">,</span> <span class="n">data_file_name</span><span class="p">)</span>
+<span class="n">parent_path</span>  <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">TrainingArguments</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">DataCollatorForLanguageModeling</span>
+<span class="kn">import</span> <span class="nn">urllib.request</span>
+<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+
+<span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;HuggingFaceTB/SmolLM-135M&quot;</span>
+<span class="n">train_source_uri</span> <span class="o">=</span> <span class="s2">&quot;https://www.gutenberg.org/cache/epub/28054/pg28054.txt&quot;</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">data_file_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Download </span><span class="si">{</span><span class="n">train_source_uri</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">urllib</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">train_source_uri</span><span class="p">)</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out_file</span><span class="p">:</span>
+            <span class="n">out_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">)</span><span class="si">}</span><span class="s2"> already exists. Skip Download&quot;</span><span class="p">)</span>
+    
+            
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="n">data_files</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">data_file_path</span><span class="p">))</span>
+
+<span class="c1"># Tokenizer and data loaders</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gopi/Documents/small_llm/llmbook/data/chapter4/brothers.txt already exists. Skip Download
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token</span>
+
+<span class="k">def</span> <span class="nf">tokenize</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tokenizer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">batch</span><span class="p">))</span>
+
+<span class="n">tokenized_dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">tokenize</span><span class="p">)</span>
+<span class="n">data_collator</span> <span class="o">=</span> <span class="n">DataCollatorForLanguageModeling</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">=</span><span class="n">tokenizer</span><span class="p">,</span><span class="n">mlm</span> <span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gopi/.local/lib/python3.10/site-packages/huggingface_hub/file_download.py:1150: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+
+<span class="n">start_context</span> <span class="o">=</span> <span class="s2">&quot;third son of Fyodor Pavlovitch Karamazov is&quot;</span>
+<span class="n">prompt_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">start_context</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">prompt_tokens</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span>
+   <span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span>
+   <span class="p">,</span><span class="n">num_beams</span><span class="o">=</span><span class="mi">2</span>
+   <span class="p">,</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span>
+   <span class="p">,</span><span class="n">top_k</span><span class="o">=</span><span class="mi">50</span>
+   <span class="p">,</span><span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span>
+   <span class="p">,</span><span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span>
+
+<span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gopi/.local/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:492: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/home/gopi/.local/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:497: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.9` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+The attention mask and the pad token id were not set. As a consequence, you may observe unexpected behavior. Please pass your input&#39;s `attention_mask` to obtain reliable results.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting `pad_token_id` to `eos_token_id`:0 for open-end generation.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;third son of Fyodor Pavlovitch Karamazov is the most famous of all the princes of Russia. He was born in 1765 in the village of Kostroma, in what is now the Russian Federation. His father, Ivan Pavlovich, was a military officer and a member of the Imperial Guard. Ivan was also a great-grandson of Ivan the Terrible, the last tsar of Muscovy.\nKaramuzov was&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="full-fine-tuning">
+<h2>Full fine-tuning<a class="headerlink" href="#full-fine-tuning" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+    <span class="n">output_dir</span> <span class="o">=</span> <span class="n">save_directory</span>
+   <span class="p">,</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">1</span>
+   <span class="p">,</span><span class="n">per_device_train_batch_size</span><span class="o">=</span><span class="mi">16</span>
+   <span class="p">,</span><span class="n">save_steps</span><span class="o">=</span><span class="mi">500</span>
+   <span class="p">,</span><span class="n">save_total_limit</span><span class="o">=</span><span class="mi">2</span>
+   <span class="p">,</span><span class="n">report_to</span><span class="o">=</span><span class="s2">&quot;none&quot;</span> 
+<span class="p">)</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span>
+   <span class="p">,</span><span class="n">args</span> <span class="o">=</span><span class="n">train_args</span>
+   <span class="p">,</span><span class="n">data_collator</span><span class="o">=</span><span class="n">data_collator</span>
+   <span class="p">,</span><span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_dataset</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gopi/.local/lib/python3.10/site-packages/torch/cuda/__init__.py:128: UserWarning: CUDA initialization: CUDA unknown error - this may be due to an incorrectly set up environment, e.g. changing env variable CUDA_VISIBLE_DEVICES after program start. Setting the available devices to be zero. (Triggered internally at ../c10/cuda/CUDAFunctions.cpp:108.)
+  return torch._C._cuda_getDeviceCount() &gt; 0
+</pre></div>
+</div>
+<div class="output text_html">
+    <div>
+      
+      <progress value='12' max='2353' style='width:300px; height:20px; vertical-align: middle;'></progress>
+      [  12/2353 00:25 < 1:38:46, 0.40 it/s, Epoch 0.00/1]
+    </div>
+    <table border="1" class="dataframe">
+  <thead>
+ <tr style="text-align: left;">
+      <th>Step</th>
+      <th>Training Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table><p></div><div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">17</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">train_args</span> <span class="o">=</span> <span class="n">TrainingArguments</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">output_dir</span> <span class="o">=</span> <span class="n">save_directory</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>    <span class="p">,</span><span class="n">num_train_epochs</span> <span class="o">=</span> <span class="mi">1</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span>    <span class="p">,</span><span class="n">report_to</span><span class="o">=</span><span class="s2">&quot;none&quot;</span> 
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="n">model</span><span class="o">=</span><span class="n">model</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span>    <span class="p">,</span><span class="n">args</span> <span class="o">=</span><span class="n">train_args</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span>    <span class="p">,</span><span class="n">data_collator</span><span class="o">=</span><span class="n">data_collator</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span>    <span class="p">,</span><span class="n">train_dataset</span><span class="o">=</span><span class="n">tokenized_dataset</span><span class="p">[</span><span class="s2">&quot;train&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">17</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/transformers/trainer.py:1859,</span> in <span class="ni">Trainer.train</span><span class="nt">(self, resume_from_checkpoint, trial, ignore_keys_for_eval, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1857</span>         <span class="n">hf_hub_utils</span><span class="o">.</span><span class="n">enable_progress_bars</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1858</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">1859</span>     <span class="k">return</span> <span class="n">inner_training_loop</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1860</span>         <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1861</span>         <span class="n">resume_from_checkpoint</span><span class="o">=</span><span class="n">resume_from_checkpoint</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1862</span>         <span class="n">trial</span><span class="o">=</span><span class="n">trial</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1863</span>         <span class="n">ignore_keys_for_eval</span><span class="o">=</span><span class="n">ignore_keys_for_eval</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1864</span>     <span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/transformers/trainer.py:2203,</span> in <span class="ni">Trainer._inner_training_loop</span><span class="nt">(self, batch_size, args, resume_from_checkpoint, trial, ignore_keys_for_eval)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2200</span>     <span class="bp">self</span><span class="o">.</span><span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback_handler</span><span class="o">.</span><span class="n">on_step_begin</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">control</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2202</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">accelerator</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2203</span>     <span class="n">tr_loss_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2205</span> <span class="k">if</span> <span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2206</span>     <span class="n">args</span><span class="o">.</span><span class="n">logging_nan_inf_filter</span>
+<span class="g g-Whitespace">   </span><span class="mi">2207</span>     <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_torch_xla_available</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">2208</span>     <span class="ow">and</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">tr_loss_step</span><span class="p">)</span> <span class="ow">or</span> <span class="n">torch</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">tr_loss_step</span><span class="p">))</span>
+<span class="g g-Whitespace">   </span><span class="mi">2209</span> <span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">2210</span>     <span class="c1"># if loss is nan or inf simply add the average of previous logged losses</span>
+<span class="g g-Whitespace">   </span><span class="mi">2211</span>     <span class="n">tr_loss</span> <span class="o">+=</span> <span class="n">tr_loss</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">global_step</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_globalstep_last_logged</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/transformers/trainer.py:3147,</span> in <span class="ni">Trainer.training_step</span><span class="nt">(self, model, inputs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3145</span>         <span class="n">scaled_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">3146</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">3147</span>     <span class="bp">self</span><span class="o">.</span><span class="n">accelerator</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3149</span> <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">gradient_accumulation_steps</span>
+
+<span class="nn">File /usr/local/lib/python3.10/dist-packages/accelerate/accelerator.py:2159,</span> in <span class="ni">Accelerator.backward</span><span class="nt">(self, loss, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2157</span>     <span class="bp">self</span><span class="o">.</span><span class="n">lomo_backward</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2158</span> <span class="k">else</span><span class="p">:</span>
+<span class="ne">-&gt; </span><span class="mi">2159</span>     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/torch/_tensor.py:521,</span> in <span class="ni">Tensor.backward</span><span class="nt">(self, gradient, retain_graph, create_graph, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">511</span> <span class="k">if</span> <span class="n">has_torch_function_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">512</span>     <span class="k">return</span> <span class="n">handle_torch_function</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">513</span>         <span class="n">Tensor</span><span class="o">.</span><span class="n">backward</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">514</span>         <span class="p">(</span><span class="bp">self</span><span class="p">,),</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">519</span>         <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">520</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">521</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">522</span>     <span class="bp">self</span><span class="p">,</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">retain_graph</span><span class="p">,</span> <span class="n">create_graph</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span>
+<span class="g g-Whitespace">    </span><span class="mi">523</span> <span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/torch/autograd/__init__.py:289,</span> in <span class="ni">backward</span><span class="nt">(tensors, grad_tensors, retain_graph, create_graph, grad_variables, inputs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">284</span>     <span class="n">retain_graph</span> <span class="o">=</span> <span class="n">create_graph</span>
+<span class="g g-Whitespace">    </span><span class="mi">286</span> <span class="c1"># The reason we repeat the same comment below is that</span>
+<span class="g g-Whitespace">    </span><span class="mi">287</span> <span class="c1"># some Python versions print out the first line of a multi-line function</span>
+<span class="g g-Whitespace">    </span><span class="mi">288</span> <span class="c1"># calls in the traceback and some print out the last line</span>
+<span class="ne">--&gt; </span><span class="mi">289</span> <span class="n">_engine_run_backward</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">290</span>     <span class="n">tensors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">291</span>     <span class="n">grad_tensors_</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">292</span>     <span class="n">retain_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">293</span>     <span class="n">create_graph</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">294</span>     <span class="n">inputs</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">295</span>     <span class="n">allow_unreachable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">296</span>     <span class="n">accumulate_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">297</span> <span class="p">)</span>
+
+<span class="nn">File ~/.local/lib/python3.10/site-packages/torch/autograd/graph.py:768,</span> in <span class="ni">_engine_run_backward</span><span class="nt">(t_outputs, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">766</span>     <span class="n">unregister_hooks</span> <span class="o">=</span> <span class="n">_register_logging_hooks_on_whole_graph</span><span class="p">(</span><span class="n">t_outputs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">767</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">768</span>     <span class="k">return</span> <span class="n">Variable</span><span class="o">.</span><span class="n">_execution_engine</span><span class="o">.</span><span class="n">run_backward</span><span class="p">(</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">769</span>         <span class="n">t_outputs</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+<span class="g g-Whitespace">    </span><span class="mi">770</span>     <span class="p">)</span>  <span class="c1"># Calls into the C++ engine to run the backward pass</span>
+<span class="g g-Whitespace">    </span><span class="mi">771</span> <span class="k">finally</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">772</span>     <span class="k">if</span> <span class="n">attach_logging_hooks</span><span class="p">:</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">save_model</span><span class="p">(</span><span class="n">save_directory</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">new_model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">save_directory</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_context</span> <span class="o">=</span> <span class="s2">&quot;third son of Fyodor Pavlovitch Karamazov is&quot;</span>
+<span class="n">prompt_tokens</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span><span class="n">start_context</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s2">&quot;pt&quot;</span><span class="p">)</span>
+
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">new_model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+    <span class="n">input_ids</span> <span class="o">=</span> <span class="n">prompt_tokens</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span>
+   <span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span>
+   <span class="p">,</span><span class="n">num_beams</span><span class="o">=</span><span class="mi">2</span>
+   <span class="p">,</span><span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span>
+   <span class="p">,</span><span class="n">top_k</span><span class="o">=</span><span class="mi">50</span>
+   <span class="p">,</span><span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span>
+   <span class="p">,</span><span class="n">no_repeat_ngram_size</span><span class="o">=</span><span class="mi">2</span>
+
+<span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/gopi/.local/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:497: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.7` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+The attention mask and the pad token id were not set. As a consequence, you may observe unexpected behavior. Please pass your input&#39;s `attention_mask` to obtain reliable results.
+Setting `pad_token_id` to `eos_token_id`:0 for open-end generation.
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;third son of Fyodor Pavlovitch Karamazov is the only one to have been married to a Russian woman. The other two are the daughters of Ivan Pavlovich and Alyosha, who were married at the age of twenty-five. Ivan’s wife died in 1880, and the other was a widow. She was the daughter of a merchant, a man who had married a woman of the highest rank. He had been a captain in the&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">prompt_tokens</span><span class="p">[</span><span class="s2">&quot;input_ids&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[14370,  4132,   282,   426,   105, 29672, 29396, 34331,  3224, 13463,
+           332,  1437,   749,   314]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="freezing-certain-layers">
+<h2>Freezing certain layers<a class="headerlink" href="#freezing-certain-layers" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">named_parameters</span><span class="p">():</span>
+     <span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">param</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>model.embed_tokens.weight True
+model.layers.0.self_attn.q_proj.weight True
+model.layers.0.self_attn.k_proj.weight True
+model.layers.0.self_attn.v_proj.weight True
+model.layers.0.self_attn.o_proj.weight True
+model.layers.0.mlp.gate_proj.weight True
+model.layers.0.mlp.up_proj.weight True
+model.layers.0.mlp.down_proj.weight True
+model.layers.0.input_layernorm.weight True
+model.layers.0.post_attention_layernorm.weight True
+model.layers.1.self_attn.q_proj.weight True
+model.layers.1.self_attn.k_proj.weight True
+model.layers.1.self_attn.v_proj.weight True
+model.layers.1.self_attn.o_proj.weight True
+model.layers.1.mlp.gate_proj.weight True
+model.layers.1.mlp.up_proj.weight True
+model.layers.1.mlp.down_proj.weight True
+model.layers.1.input_layernorm.weight True
+model.layers.1.post_attention_layernorm.weight True
+model.layers.2.self_attn.q_proj.weight True
+model.layers.2.self_attn.k_proj.weight True
+model.layers.2.self_attn.v_proj.weight True
+model.layers.2.self_attn.o_proj.weight True
+model.layers.2.mlp.gate_proj.weight True
+model.layers.2.mlp.up_proj.weight True
+model.layers.2.mlp.down_proj.weight True
+model.layers.2.input_layernorm.weight True
+model.layers.2.post_attention_layernorm.weight True
+model.layers.3.self_attn.q_proj.weight True
+model.layers.3.self_attn.k_proj.weight True
+model.layers.3.self_attn.v_proj.weight True
+model.layers.3.self_attn.o_proj.weight True
+model.layers.3.mlp.gate_proj.weight True
+model.layers.3.mlp.up_proj.weight True
+model.layers.3.mlp.down_proj.weight True
+model.layers.3.input_layernorm.weight True
+model.layers.3.post_attention_layernorm.weight True
+model.layers.4.self_attn.q_proj.weight True
+model.layers.4.self_attn.k_proj.weight True
+model.layers.4.self_attn.v_proj.weight True
+model.layers.4.self_attn.o_proj.weight True
+model.layers.4.mlp.gate_proj.weight True
+model.layers.4.mlp.up_proj.weight True
+model.layers.4.mlp.down_proj.weight True
+model.layers.4.input_layernorm.weight True
+model.layers.4.post_attention_layernorm.weight True
+model.layers.5.self_attn.q_proj.weight True
+model.layers.5.self_attn.k_proj.weight True
+model.layers.5.self_attn.v_proj.weight True
+model.layers.5.self_attn.o_proj.weight True
+model.layers.5.mlp.gate_proj.weight True
+model.layers.5.mlp.up_proj.weight True
+model.layers.5.mlp.down_proj.weight True
+model.layers.5.input_layernorm.weight True
+model.layers.5.post_attention_layernorm.weight True
+model.layers.6.self_attn.q_proj.weight True
+model.layers.6.self_attn.k_proj.weight True
+model.layers.6.self_attn.v_proj.weight True
+model.layers.6.self_attn.o_proj.weight True
+model.layers.6.mlp.gate_proj.weight True
+model.layers.6.mlp.up_proj.weight True
+model.layers.6.mlp.down_proj.weight True
+model.layers.6.input_layernorm.weight True
+model.layers.6.post_attention_layernorm.weight True
+model.layers.7.self_attn.q_proj.weight True
+model.layers.7.self_attn.k_proj.weight True
+model.layers.7.self_attn.v_proj.weight True
+model.layers.7.self_attn.o_proj.weight True
+model.layers.7.mlp.gate_proj.weight True
+model.layers.7.mlp.up_proj.weight True
+model.layers.7.mlp.down_proj.weight True
+model.layers.7.input_layernorm.weight True
+model.layers.7.post_attention_layernorm.weight True
+model.layers.8.self_attn.q_proj.weight True
+model.layers.8.self_attn.k_proj.weight True
+model.layers.8.self_attn.v_proj.weight True
+model.layers.8.self_attn.o_proj.weight True
+model.layers.8.mlp.gate_proj.weight True
+model.layers.8.mlp.up_proj.weight True
+model.layers.8.mlp.down_proj.weight True
+model.layers.8.input_layernorm.weight True
+model.layers.8.post_attention_layernorm.weight True
+model.layers.9.self_attn.q_proj.weight True
+model.layers.9.self_attn.k_proj.weight True
+model.layers.9.self_attn.v_proj.weight True
+model.layers.9.self_attn.o_proj.weight True
+model.layers.9.mlp.gate_proj.weight True
+model.layers.9.mlp.up_proj.weight True
+model.layers.9.mlp.down_proj.weight True
+model.layers.9.input_layernorm.weight True
+model.layers.9.post_attention_layernorm.weight True
+model.layers.10.self_attn.q_proj.weight True
+model.layers.10.self_attn.k_proj.weight True
+model.layers.10.self_attn.v_proj.weight True
+model.layers.10.self_attn.o_proj.weight True
+model.layers.10.mlp.gate_proj.weight True
+model.layers.10.mlp.up_proj.weight True
+model.layers.10.mlp.down_proj.weight True
+model.layers.10.input_layernorm.weight True
+model.layers.10.post_attention_layernorm.weight True
+model.layers.11.self_attn.q_proj.weight True
+model.layers.11.self_attn.k_proj.weight True
+model.layers.11.self_attn.v_proj.weight True
+model.layers.11.self_attn.o_proj.weight True
+model.layers.11.mlp.gate_proj.weight True
+model.layers.11.mlp.up_proj.weight True
+model.layers.11.mlp.down_proj.weight True
+model.layers.11.input_layernorm.weight True
+model.layers.11.post_attention_layernorm.weight True
+model.layers.12.self_attn.q_proj.weight True
+model.layers.12.self_attn.k_proj.weight True
+model.layers.12.self_attn.v_proj.weight True
+model.layers.12.self_attn.o_proj.weight True
+model.layers.12.mlp.gate_proj.weight True
+model.layers.12.mlp.up_proj.weight True
+model.layers.12.mlp.down_proj.weight True
+model.layers.12.input_layernorm.weight True
+model.layers.12.post_attention_layernorm.weight True
+model.layers.13.self_attn.q_proj.weight True
+model.layers.13.self_attn.k_proj.weight True
+model.layers.13.self_attn.v_proj.weight True
+model.layers.13.self_attn.o_proj.weight True
+model.layers.13.mlp.gate_proj.weight True
+model.layers.13.mlp.up_proj.weight True
+model.layers.13.mlp.down_proj.weight True
+model.layers.13.input_layernorm.weight True
+model.layers.13.post_attention_layernorm.weight True
+model.layers.14.self_attn.q_proj.weight True
+model.layers.14.self_attn.k_proj.weight True
+model.layers.14.self_attn.v_proj.weight True
+model.layers.14.self_attn.o_proj.weight True
+model.layers.14.mlp.gate_proj.weight True
+model.layers.14.mlp.up_proj.weight True
+model.layers.14.mlp.down_proj.weight True
+model.layers.14.input_layernorm.weight True
+model.layers.14.post_attention_layernorm.weight True
+model.layers.15.self_attn.q_proj.weight True
+model.layers.15.self_attn.k_proj.weight True
+model.layers.15.self_attn.v_proj.weight True
+model.layers.15.self_attn.o_proj.weight True
+model.layers.15.mlp.gate_proj.weight True
+model.layers.15.mlp.up_proj.weight True
+model.layers.15.mlp.down_proj.weight True
+model.layers.15.input_layernorm.weight True
+model.layers.15.post_attention_layernorm.weight True
+model.layers.16.self_attn.q_proj.weight True
+model.layers.16.self_attn.k_proj.weight True
+model.layers.16.self_attn.v_proj.weight True
+model.layers.16.self_attn.o_proj.weight True
+model.layers.16.mlp.gate_proj.weight True
+model.layers.16.mlp.up_proj.weight True
+model.layers.16.mlp.down_proj.weight True
+model.layers.16.input_layernorm.weight True
+model.layers.16.post_attention_layernorm.weight True
+model.layers.17.self_attn.q_proj.weight True
+model.layers.17.self_attn.k_proj.weight True
+model.layers.17.self_attn.v_proj.weight True
+model.layers.17.self_attn.o_proj.weight True
+model.layers.17.mlp.gate_proj.weight True
+model.layers.17.mlp.up_proj.weight True
+model.layers.17.mlp.down_proj.weight True
+model.layers.17.input_layernorm.weight True
+model.layers.17.post_attention_layernorm.weight True
+model.layers.18.self_attn.q_proj.weight True
+model.layers.18.self_attn.k_proj.weight True
+model.layers.18.self_attn.v_proj.weight True
+model.layers.18.self_attn.o_proj.weight True
+model.layers.18.mlp.gate_proj.weight True
+model.layers.18.mlp.up_proj.weight True
+model.layers.18.mlp.down_proj.weight True
+model.layers.18.input_layernorm.weight True
+model.layers.18.post_attention_layernorm.weight True
+model.layers.19.self_attn.q_proj.weight True
+model.layers.19.self_attn.k_proj.weight True
+model.layers.19.self_attn.v_proj.weight True
+model.layers.19.self_attn.o_proj.weight True
+model.layers.19.mlp.gate_proj.weight True
+model.layers.19.mlp.up_proj.weight True
+model.layers.19.mlp.down_proj.weight True
+model.layers.19.input_layernorm.weight True
+model.layers.19.post_attention_layernorm.weight True
+model.layers.20.self_attn.q_proj.weight True
+model.layers.20.self_attn.k_proj.weight True
+model.layers.20.self_attn.v_proj.weight True
+model.layers.20.self_attn.o_proj.weight True
+model.layers.20.mlp.gate_proj.weight True
+model.layers.20.mlp.up_proj.weight True
+model.layers.20.mlp.down_proj.weight True
+model.layers.20.input_layernorm.weight True
+model.layers.20.post_attention_layernorm.weight True
+model.layers.21.self_attn.q_proj.weight True
+model.layers.21.self_attn.k_proj.weight True
+model.layers.21.self_attn.v_proj.weight True
+model.layers.21.self_attn.o_proj.weight True
+model.layers.21.mlp.gate_proj.weight True
+model.layers.21.mlp.up_proj.weight True
+model.layers.21.mlp.down_proj.weight True
+model.layers.21.input_layernorm.weight True
+model.layers.21.post_attention_layernorm.weight True
+model.layers.22.self_attn.q_proj.weight True
+model.layers.22.self_attn.k_proj.weight True
+model.layers.22.self_attn.v_proj.weight True
+model.layers.22.self_attn.o_proj.weight True
+model.layers.22.mlp.gate_proj.weight True
+model.layers.22.mlp.up_proj.weight True
+model.layers.22.mlp.down_proj.weight True
+model.layers.22.input_layernorm.weight True
+model.layers.22.post_attention_layernorm.weight True
+model.layers.23.self_attn.q_proj.weight True
+model.layers.23.self_attn.k_proj.weight True
+model.layers.23.self_attn.v_proj.weight True
+model.layers.23.self_attn.o_proj.weight True
+model.layers.23.mlp.gate_proj.weight True
+model.layers.23.mlp.up_proj.weight True
+model.layers.23.mlp.down_proj.weight True
+model.layers.23.input_layernorm.weight True
+model.layers.23.post_attention_layernorm.weight True
+model.layers.24.self_attn.q_proj.weight True
+model.layers.24.self_attn.k_proj.weight True
+model.layers.24.self_attn.v_proj.weight True
+model.layers.24.self_attn.o_proj.weight True
+model.layers.24.mlp.gate_proj.weight True
+model.layers.24.mlp.up_proj.weight True
+model.layers.24.mlp.down_proj.weight True
+model.layers.24.input_layernorm.weight True
+model.layers.24.post_attention_layernorm.weight True
+model.layers.25.self_attn.q_proj.weight True
+model.layers.25.self_attn.k_proj.weight True
+model.layers.25.self_attn.v_proj.weight True
+model.layers.25.self_attn.o_proj.weight True
+model.layers.25.mlp.gate_proj.weight True
+model.layers.25.mlp.up_proj.weight True
+model.layers.25.mlp.down_proj.weight True
+model.layers.25.input_layernorm.weight True
+model.layers.25.post_attention_layernorm.weight True
+model.layers.26.self_attn.q_proj.weight True
+model.layers.26.self_attn.k_proj.weight True
+model.layers.26.self_attn.v_proj.weight True
+model.layers.26.self_attn.o_proj.weight True
+model.layers.26.mlp.gate_proj.weight True
+model.layers.26.mlp.up_proj.weight True
+model.layers.26.mlp.down_proj.weight True
+model.layers.26.input_layernorm.weight True
+model.layers.26.post_attention_layernorm.weight True
+model.layers.27.self_attn.q_proj.weight True
+model.layers.27.self_attn.k_proj.weight True
+model.layers.27.self_attn.v_proj.weight True
+model.layers.27.self_attn.o_proj.weight True
+model.layers.27.mlp.gate_proj.weight True
+model.layers.27.mlp.up_proj.weight True
+model.layers.27.mlp.down_proj.weight True
+model.layers.27.input_layernorm.weight True
+model.layers.27.post_attention_layernorm.weight True
+model.layers.28.self_attn.q_proj.weight True
+model.layers.28.self_attn.k_proj.weight True
+model.layers.28.self_attn.v_proj.weight True
+model.layers.28.self_attn.o_proj.weight True
+model.layers.28.mlp.gate_proj.weight True
+model.layers.28.mlp.up_proj.weight True
+model.layers.28.mlp.down_proj.weight True
+model.layers.28.input_layernorm.weight True
+model.layers.28.post_attention_layernorm.weight True
+model.layers.29.self_attn.q_proj.weight True
+model.layers.29.self_attn.k_proj.weight True
+model.layers.29.self_attn.v_proj.weight True
+model.layers.29.self_attn.o_proj.weight True
+model.layers.29.mlp.gate_proj.weight True
+model.layers.29.mlp.up_proj.weight True
+model.layers.29.mlp.down_proj.weight True
+model.layers.29.input_layernorm.weight True
+model.layers.29.post_attention_layernorm.weight True
+model.norm.weight True
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Task based Fine Tuning</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters/chapter4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-fine-tune">Full fine tune</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-fine-tuning">Full fine-tuning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#freezing-certain-layers">Freezing certain layers</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gopi Subramanian
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

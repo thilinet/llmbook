@@ -22,7 +22,7 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 {% endhighlight %}
 ------------------
 
-[0;36m  File [0;32m"/tmp/ipykernel_5875/660099990.py"[0;36m, line [0;32m1[0m
+[0;36m  Cell [0;32mIn[1], line 1[0;36m[0m
 [0;31m    {% highlight python %}[0m
 [0m     ^[0m
 [0;31mSyntaxError[0m[0;31m:[0m invalid syntax

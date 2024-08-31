@@ -183,14 +183,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../chapter1/chapter1.html">Chapter 1 - Input to LLMs</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 2 - Transformer Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter4.html">Chapter 4 - Fine tuning a LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter5.html">Chapter 5 - Instruction Fine Tuning</a></li>
+
 <li class="toctree-l1"><a class="reference internal" href="../chapter6.html">Chapter 6 - Prompt Engineering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="../chapter9.html">Chapter 7 - Rag based applications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 6 - Artificial General Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 10- Artificial General Intelligence</a></li>
 </ul>
 
     </div>
@@ -386,7 +385,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vaswwani-architecture">Vaswwani architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-llms-are-decoder-transformers">Why LLMs are decoder Transformers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaled-dot-product-self-attention">Scaled dot product self-attention</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a></li>
 </ul>
@@ -406,31 +406,45 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="chapter-2-transformer-architecture">
 <h1>Chapter 2 - Transformer Architecture<a class="headerlink" href="#chapter-2-transformer-architecture" title="Link to this heading">#</a></h1>
-<section id="vaswwani-architecture">
-<h2>Vaswwani architecture<a class="headerlink" href="#vaswwani-architecture" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>Encoder</p></li>
-</ul>
-<p>Transforms the input into a condensed <a class="reference external" href="http://representation.In">representation.In</a> machine translation, english sentence is converted to a vector that encodes the linguistic features
-and meaning of the sentence.</p>
-<p>Some example models are, BERT-based models</p>
-<p>They are pre-trained using Masked Language Modeling</p>
-<p>Effective for classification, sentiment analysis, information extraction.</p>
-<ul class="simple">
-<li><p>Decoder</p></li>
-</ul>
-<p>Takes the encoded representation and generates an output. In transalation, the decoder takes the encoded represenation of the English sentence and generates its
-french translation.</p>
-<p>some example models are GPT, LLama etc</p>
-<p>They are pre-trained for next token prediction -  autoregressive - causal models</p>
-<p>Very effective for Generative Tasks.</p>
-<ul>
-<li><p>Encoder - Decoder Models</p>
-<p>T5, BART etc</p>
-<p>Their pre-training is task dependent</p>
-<p>Tasks that involve both understanding and generating data. They first encode an input sequence into an internal represenation and then decode this represenation into an output sequence.</p>
-</li>
-</ul>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>At the heart of any large language model lies the transformers. Proposed by in the seminal paper Attention is all you need by <span id="id1">[<a class="reference internal" href="../../intro.html#id2" title="Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Lukasz Kaiser, and Illia Polosukhin. Attention is all you need. 2023. URL: https://arxiv.org/abs/1706.03762, arXiv:1706.03762.">VSP+23</a>]</span>, it has become the backbone for modern LLM. Original Transformer articulated in the paper is a neural network, consisting of the following modules</p>
+<ol class="arabic simple">
+<li><p>Encoder Module
+This is made of several self attention module heads followed by a fully conntected layers.</p></li>
+<li><p>Decoder Module
+Similar to an encoder module with attention heads followed by fully connected layers. In addtion to user input, this layer also takes in the embedding output from encoding module.</p></li>
+</ol>
+<figure class="align-default" id="transformer-architecture">
+<a class="reference internal image-reference" href="images/chapter2/Transformer.png"><img alt="images/chapter2/Transformer.png" src="images/chapter2/Transformer.png" style="height: 150px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">Transformer Architecture</span><a class="headerlink" href="#transformer-architecture" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Transormer architecture is a deep learning neural network trained for language translation tasks. The Attention is all you need paper gives an example of training from english to german and french. You can think of it as two neural networks, an encoder and a decoder connected in a cascading manner to perform the translation task.</p>
+<p>The encoder converts the whole input english text into an embedded vector represenation. The decoder uses this embedded vector and translates one word a time. There are three types of transformers which evolved quickly after this paper was published.</p>
+<ol class="arabic simple">
+<li><p>Encoder - Decoder transformers
+They include both encoders and decoders. Translation models uses these architecture.  T5, BART etc. Their pre-training is task dependent. Tasks that involve both understanding and generating data. They first encode an input sequence into an internal represenation and then decode this represenation into an output sequence.</p></li>
+<li><p>Encoder only Transformers<br />
+Models like BERT are encoder only transfomer.Their task involves only understanding. They are trained to do masked word prediction. Given a sentence, one of the word will be masked. Encoder only models are heavily used in classification tasks.</p></li>
+<li><p>Decoder only Transformers
+In this book we will be looking at decoder only models. Decoder only models are trained to perform text generation. These models are also called as autoregressive models.</p></li>
+</ol>
+<p>The secret sauce in encoder / decoder architecture is the multi-head attention <a class="reference external" href="http://module.It">module.It</a> is this attention mechanism module which claims to provide better contextual information and long term dependency features present in the input text data to the model. Let us lookat the following two examples</p>
+<ol class="arabic simple">
+<li><p>The river bank is not accessible to the tourist.</p></li>
+<li><p>The robbers had planned a heist of major banks in the city.</p></li>
+</ol>
+<p>Both the example sentences have the word “bank”. The context in the first sentence is “river” and the second sentence is “heist”.  We want the model to treat the word “bank” with respect to their context in the sentence. Another example,</p>
+<ol class="arabic simple">
+<li><p>I went to the library yesterday, there i forgot my book. I am returning there today.</p></li>
+</ol>
+<p>As an English reader, if I ask you a question “Were am I returning?”, you know that I am returning to the library. The previous sentence has the clue. This is a trivial example for long term dependency.</p>
+<p>This is where attention mechanism comes to rescue. Using attention mechanism we inject contextual information and long term dependency in to the model. We saw word embeddings in the previous chapter. Each word or a token had a unique position in the embedding space. However as we saw in the previous examples, these embeddings need to account for the contextual information in the input text. Attention mechanism adds these contextual information to the vector representaion of the token. More about attention in the subsequent sections.</p>
+</section>
+<section id="why-llms-are-decoder-transformers">
+<h2>Why LLMs are decoder Transformers<a class="headerlink" href="#why-llms-are-decoder-transformers" title="Link to this heading">#</a></h2>
 <p>Why most of the LLMs are decoder only models and not encoder-decoder model?</p>
 <p>According to {cite}’wang2022language’ Decoder only models trained on next word prediction objective exibit the strongest zero-shot generalization after purely self-supervised pretraining.</p>
 <p>Models trained with masked language modeling objective, followed by mutitask finetuning perform the best among our experiments.</p>
@@ -545,64 +559,7 @@ and complexity.<a class="reference external" href="https://yaofu.notion.site/How
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([32, 512])
 torch.Size([32, 128])
-tensor([-0.9252, -1.1500,  0.8654], grad_fn=&lt;SliceBackward0&gt;)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>A module that was compiled using NumPy 1.x cannot be run in
-NumPy 2.0.1 as it may crash. To support both 1.x and 2.x
-versions of NumPy, modules must be compiled with NumPy 2.0.
-Some module may need to rebuild instead e.g. with &#39;pybind11&gt;=2.12&#39;.
-
-If you are a user of the module, the easiest solution will be to
-downgrade to &#39;numpy&lt;2&#39; or try to upgrade the affected module.
-We expect that some modules will need time to support NumPy 2.
-
-Traceback (most recent call last):  File &quot;/usr/lib/python3.10/runpy.py&quot;, line 196, in _run_module_as_main
-    return _run_code(code, main_globals, None,
-  File &quot;/usr/lib/python3.10/runpy.py&quot;, line 86, in _run_code
-    exec(code, run_globals)
-  File &quot;/usr/lib/python3/dist-packages/ipykernel_launcher.py&quot;, line 16, in &lt;module&gt;
-    app.launch_new_instance()
-  File &quot;/usr/lib/python3/dist-packages/traitlets/config/application.py&quot;, line 846, in launch_instance
-    app.start()
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/kernelapp.py&quot;, line 677, in start
-    self.io_loop.start()
-  File &quot;/usr/lib/python3/dist-packages/tornado/platform/asyncio.py&quot;, line 199, in start
-    self.asyncio_loop.run_forever()
-  File &quot;/usr/lib/python3.10/asyncio/base_events.py&quot;, line 603, in run_forever
-    self._run_once()
-  File &quot;/usr/lib/python3.10/asyncio/base_events.py&quot;, line 1909, in _run_once
-    handle._run()
-  File &quot;/usr/lib/python3.10/asyncio/events.py&quot;, line 80, in _run
-    self._context.run(self._callback, *self._args)
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/kernelbase.py&quot;, line 461, in dispatch_queue
-    await self.process_one()
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/kernelbase.py&quot;, line 450, in process_one
-    await dispatch(*args)
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/kernelbase.py&quot;, line 357, in dispatch_shell
-    await result
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/kernelbase.py&quot;, line 652, in execute_request
-    reply_content = await reply_content
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/ipkernel.py&quot;, line 353, in do_execute
-    res = shell.run_cell(code, store_history=store_history, silent=silent)
-  File &quot;/usr/lib/python3/dist-packages/ipykernel/zmqshell.py&quot;, line 532, in run_cell
-    return super().run_cell(*args, **kwargs)
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/interactiveshell.py&quot;, line 2914, in run_cell
-    result = self._run_cell(
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/interactiveshell.py&quot;, line 2960, in _run_cell
-    return runner(coro)
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/async_helpers.py&quot;, line 78, in _pseudo_sync_runner
-    coro.send(None)
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/interactiveshell.py&quot;, line 3185, in run_cell_async
-    has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/interactiveshell.py&quot;, line 3377, in run_ast_nodes
-    if (await self.run_code(code, result,  async_=asy)):
-  File &quot;/usr/lib/python3/dist-packages/IPython/core/interactiveshell.py&quot;, line 3457, in run_code
-    exec(code_obj, self.user_global_ns, self.user_ns)
-  File &quot;/tmp/ipykernel_132181/3528798129.py&quot;, line 1, in &lt;module&gt;
-    x = torch.normal(0.5,0.3,size=(config.context_window, config.d_model))
-/tmp/ipykernel_132181/3528798129.py:1: UserWarning: Failed to initialize NumPy: _ARRAY_API not found (Triggered internally at ./torch/csrc/utils/tensor_numpy.cpp:84.)
-  x = torch.normal(0.5,0.3,size=(config.context_window, config.d_model))
+tensor([0.4398, 0.1676, 0.9037], grad_fn=&lt;SliceBackward0&gt;)
 </pre></div>
 </div>
 </div>
@@ -629,7 +586,7 @@ Traceback (most recent call last):  File &quot;/usr/lib/python3.10/runpy.py&quot
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-0.9252, -1.1500,  0.8654], grad_fn=&lt;SliceBackward0&gt;)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([0.4398, 0.1676, 0.9037], grad_fn=&lt;SliceBackward0&gt;)
 </pre></div>
 </div>
 </div>
@@ -645,7 +602,7 @@ Traceback (most recent call last):  File &quot;/usr/lib/python3.10/runpy.py&quot
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_132181</span><span class="o">/</span><span class="mf">653601419.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">sha1</span> <span class="o">=</span> <span class="n">SingleHeadAttention1</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">attn</span> <span class="o">=</span> <span class="n">sha1</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">attn</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -995,7 +952,8 @@ Var  tensor([[1., 1., 1.],
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vaswwani-architecture">Vaswwani architecture</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-llms-are-decoder-transformers">Why LLMs are decoder Transformers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaled-dot-product-self-attention">Scaled dot product self-attention</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#flash-attention">Flash Attention</a></li>
 </ul>

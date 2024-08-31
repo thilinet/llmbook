@@ -61,7 +61,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Chapter 8 - LLM Agents Development Ecosystem" href="chapter8.html" />
-    <link rel="prev" title="Chapter 5 - Instruction Fine Tuning" href="chapter5.html" />
+    <link rel="prev" title="Chapter 3 - Pre-train a tiny LLM" href="chapter3/chapter3.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -183,14 +183,13 @@
 <li class="toctree-l1"><a class="reference internal" href="chapter1/chapter1.html">Chapter 1 - Input to LLMs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter2/chapter2.html">Chapter 2 - Transformer Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="chapter4.html">Chapter 4 - Fine tuning a LLM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="chapter5.html">Chapter 5 - Instruction Fine Tuning</a></li>
+
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 6 - Prompt Engineering</a></li>
 <li class="toctree-l1"><a class="reference internal" href="chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
 
 
 <li class="toctree-l1"><a class="reference internal" href="chapter9.html">Chapter 7 - Rag based applications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="chapter10.html">Chapter 6 - Artificial General Intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">Chapter 10- Artificial General Intelligence</a></li>
 </ul>
 
     </div>
@@ -388,6 +387,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-prompting">Why prompting</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-context-learning">In-context learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot">Zero Shot</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot">Few Shot</a></li>
@@ -433,11 +433,9 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_92588</span><span class="o">/</span><span class="mf">265358086.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
 <span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">langchain_community.llms</span> <span class="kn">import</span> <span class="n">Ollama</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> 
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">MODEL</span> <span class="o">=</span> <span class="s2">&quot;phi3:latest&quot;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
 <span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">llm</span> <span class="o">=</span> <span class="n">Ollama</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">MODEL</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="ne">ModuleNotFoundError</span>: No module named &#39;langchain_community&#39;
@@ -474,13 +472,9 @@ Yes, cotton will generally float on the surface of water. Cotton is a natural fi
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Zero Shot</span>
-</pre></div>
-</div>
-</div>
-</div>
+</section>
+<section id="zero-shot">
+<h3>Zero Shot<a class="headerlink" href="#zero-shot" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_core.prompts</span> <span class="kn">import</span> <span class="n">PromptTemplate</span>
@@ -678,12 +672,12 @@ question:make an example sentence that uses Bodega
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="chapter5.html"
+       href="chapter3/chapter3.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Chapter 5 - Instruction Fine Tuning</p>
+        <p class="prev-next-title">Chapter 3 - Pre-train a tiny LLM</p>
       </div>
     </a>
     <a class="right-next"
@@ -713,6 +707,7 @@ question:make an example sentence that uses Bodega
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-prompting">Why prompting</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#in-context-learning">In-context learning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#zero-shot">Zero Shot</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#few-shot">Few Shot</a></li>

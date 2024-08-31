@@ -37,11 +37,11 @@ download_simplebooks()
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m/tmp/ipykernel_132157/4065309741.py[0m in [0;36m<module>[0;34m[0m
-[1;32m     14[0m [0;34m[0m[0m
-[1;32m     15[0m [0;34m[0m[0m
-[0;32m---> 16[0;31m [0mdownload_simplebooks[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
+Cell [0;32mIn[9], line 16[0m
+[1;32m     12[0m     zipfile[38;5;241m.[39mextractall(path[38;5;241m=[39mdestination)
+[1;32m     13[0m     [38;5;28mprint[39m([38;5;124mf[39m[38;5;124m"[39m[38;5;124mFinished downloading and extracting simplebooks.zip[39m[38;5;124m"[39m)
+[0;32m---> 16[0m [43mdownload_simplebooks[49m[43m([49m[43m)[49m
+
 [0;31mTypeError[0m: download_simplebooks() missing 1 required positional argument: 'destination'
 TypeError: download_simplebooks() missing 1 required positional argument: 'destination'
 
