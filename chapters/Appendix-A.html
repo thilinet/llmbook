@@ -1,0 +1,806 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GPT Family Architecture &#8212; Learn Large Language Models Fast</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script type="application/vnd.jupyter.widget-state+json">{"state": {"41350cb61c864345ad4ebd7e4c241aaa": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "3371e6832b364942a0179bd2d55f0a24": {"model_name": "ProgressStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "ProgressStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "bar_color": null, "description_width": ""}}, "dd11ed06f3c64301aa8cc177da42b563": {"model_name": "FloatProgressModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "FloatProgressModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "ProgressView", "bar_style": "success", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_41350cb61c864345ad4ebd7e4c241aaa", "max": 2.0, "min": 0.0, "orientation": "horizontal", "style": "IPY_MODEL_3371e6832b364942a0179bd2d55f0a24", "tabbable": null, "tooltip": null, "value": 2.0}}, "10bd68da6e7c49d7833a11b06191a8d7": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "2989f13fd1f6440ca82bc273d88f7db7": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "e6baf1ae2d8b43fc8b761ec8fed3a695": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_10bd68da6e7c49d7833a11b06191a8d7", "placeholder": "\u200b", "style": "IPY_MODEL_2989f13fd1f6440ca82bc273d88f7db7", "tabbable": null, "tooltip": null, "value": "Loading\u2007checkpoint\u2007shards:\u2007100%"}}, "f4fe8596302f4e4a9b216c383ba085be": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "811713e8ecc24300988734918e263707": {"model_name": "HTMLStyleModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLStyleModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "StyleView", "background": null, "description_width": "", "font_size": null, "text_color": null}}, "9226654f693e4602ad645c9d52dcfcdc": {"model_name": "HTMLModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HTMLModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HTMLView", "description": "", "description_allow_html": false, "layout": "IPY_MODEL_f4fe8596302f4e4a9b216c383ba085be", "placeholder": "\u200b", "style": "IPY_MODEL_811713e8ecc24300988734918e263707", "tabbable": null, "tooltip": null, "value": "\u20072/2\u2007[00:08&lt;00:00,\u2007\u20073.74s/it]"}}, "fa4af198dd57421d8fadda7a6eb43326": {"model_name": "LayoutModel", "model_module": "@jupyter-widgets/base", "model_module_version": "2.0.0", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "2.0.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "2.0.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border_bottom": null, "border_left": null, "border_right": null, "border_top": null, "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": null, "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "b4086b5949bd4d3095a219a942d16bfa": {"model_name": "HBoxModel", "model_module": "@jupyter-widgets/controls", "model_module_version": "2.0.0", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/controls", "_model_module_version": "2.0.0", "_model_name": "HBoxModel", "_view_count": null, "_view_module": "@jupyter-widgets/controls", "_view_module_version": "2.0.0", "_view_name": "HBoxView", "box_style": "", "children": ["IPY_MODEL_e6baf1ae2d8b43fc8b761ec8fed3a695", "IPY_MODEL_dd11ed06f3c64301aa8cc177da42b563", "IPY_MODEL_9226654f693e4602ad645c9d52dcfcdc"], "layout": "IPY_MODEL_fa4af198dd57421d8fadda7a6eb43326", "tabbable": null, "tooltip": null}}}, "version_major": 2, "version_minor": 0}</script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script crossorigin="anonymous" data-jupyter-widgets-cdn="https://cdn.jsdelivr.net/npm/" src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@1.0.6/dist/embed-amd.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/Appendix-A';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/llm_t.png" class="logo__image only-light" alt="Learn Large Language Models Fast - Home"/>
+    <script>document.write(`<img src="../_static/llm_t.png" class="logo__image only-dark" alt="Learn Large Language Models Fast - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Learn Large Language Models Fast
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="chapter1/chapter1.html">Chapter 1 - Input to LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter2/chapter2.html">Chapter 2 - Transformer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter4.html">Chapter 4 - Fine tuning a LLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter5.html">Chapter 5 - Instruction Fine Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter6.html">Chapter 6 - Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="chapter9.html">Chapter 7 - Rag based applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="chapter10.html">Chapter 6 - Artificial General Intelligence</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapters/Appendix-A.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapters/Appendix-A.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>GPT Family Architecture</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">GPT Family Architecture</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">GPT-1</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#phi-2-model-architecture">Phi 2 Model Architecture</a></li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="gpt-family-architecture">
+<h1>GPT Family Architecture<a class="headerlink" href="#gpt-family-architecture" title="Link to this heading">#</a></h1>
+<section id="gpt-1">
+<h2>GPT-1<a class="headerlink" href="#gpt-1" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">GPT2Model</span>
+
+<span class="n">gpt2_model</span> <span class="o">=</span> <span class="n">GPT2Model</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gpt2_model</span><span class="o">.</span><span class="n">modules</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;bound method Module.modules of GPT2Model(
+  (wte): Embedding(50257, 768)
+  (wpe): Embedding(1024, 768)
+  (drop): Dropout(p=0.1, inplace=False)
+  (h): ModuleList(
+    (0-11): 12 x GPT2Block(
+      (ln_1): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (attn): GPT2SdpaAttention(
+        (c_attn): Conv1D()
+        (c_proj): Conv1D()
+        (attn_dropout): Dropout(p=0.1, inplace=False)
+        (resid_dropout): Dropout(p=0.1, inplace=False)
+      )
+      (ln_2): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+      (mlp): GPT2MLP(
+        (c_fc): Conv1D()
+        (c_proj): Conv1D()
+        (act): NewGELUActivation()
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+  )
+  (ln_f): LayerNorm((768,), eps=1e-05, elementwise_affine=True)
+)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sd</span> <span class="o">=</span> <span class="n">gpt2_model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">sd</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>wte.weight
+wpe.weight
+h.0.ln_1.weight
+h.0.ln_1.bias
+h.0.attn.c_attn.weight
+h.0.attn.c_attn.bias
+h.0.attn.c_proj.weight
+h.0.attn.c_proj.bias
+h.0.ln_2.weight
+h.0.ln_2.bias
+h.0.mlp.c_fc.weight
+h.0.mlp.c_fc.bias
+h.0.mlp.c_proj.weight
+h.0.mlp.c_proj.bias
+h.1.ln_1.weight
+h.1.ln_1.bias
+h.1.attn.c_attn.weight
+h.1.attn.c_attn.bias
+h.1.attn.c_proj.weight
+h.1.attn.c_proj.bias
+h.1.ln_2.weight
+h.1.ln_2.bias
+h.1.mlp.c_fc.weight
+h.1.mlp.c_fc.bias
+h.1.mlp.c_proj.weight
+h.1.mlp.c_proj.bias
+h.2.ln_1.weight
+h.2.ln_1.bias
+h.2.attn.c_attn.weight
+h.2.attn.c_attn.bias
+h.2.attn.c_proj.weight
+h.2.attn.c_proj.bias
+h.2.ln_2.weight
+h.2.ln_2.bias
+h.2.mlp.c_fc.weight
+h.2.mlp.c_fc.bias
+h.2.mlp.c_proj.weight
+h.2.mlp.c_proj.bias
+h.3.ln_1.weight
+h.3.ln_1.bias
+h.3.attn.c_attn.weight
+h.3.attn.c_attn.bias
+h.3.attn.c_proj.weight
+h.3.attn.c_proj.bias
+h.3.ln_2.weight
+h.3.ln_2.bias
+h.3.mlp.c_fc.weight
+h.3.mlp.c_fc.bias
+h.3.mlp.c_proj.weight
+h.3.mlp.c_proj.bias
+h.4.ln_1.weight
+h.4.ln_1.bias
+h.4.attn.c_attn.weight
+h.4.attn.c_attn.bias
+h.4.attn.c_proj.weight
+h.4.attn.c_proj.bias
+h.4.ln_2.weight
+h.4.ln_2.bias
+h.4.mlp.c_fc.weight
+h.4.mlp.c_fc.bias
+h.4.mlp.c_proj.weight
+h.4.mlp.c_proj.bias
+h.5.ln_1.weight
+h.5.ln_1.bias
+h.5.attn.c_attn.weight
+h.5.attn.c_attn.bias
+h.5.attn.c_proj.weight
+h.5.attn.c_proj.bias
+h.5.ln_2.weight
+h.5.ln_2.bias
+h.5.mlp.c_fc.weight
+h.5.mlp.c_fc.bias
+h.5.mlp.c_proj.weight
+h.5.mlp.c_proj.bias
+h.6.ln_1.weight
+h.6.ln_1.bias
+h.6.attn.c_attn.weight
+h.6.attn.c_attn.bias
+h.6.attn.c_proj.weight
+h.6.attn.c_proj.bias
+h.6.ln_2.weight
+h.6.ln_2.bias
+h.6.mlp.c_fc.weight
+h.6.mlp.c_fc.bias
+h.6.mlp.c_proj.weight
+h.6.mlp.c_proj.bias
+h.7.ln_1.weight
+h.7.ln_1.bias
+h.7.attn.c_attn.weight
+h.7.attn.c_attn.bias
+h.7.attn.c_proj.weight
+h.7.attn.c_proj.bias
+h.7.ln_2.weight
+h.7.ln_2.bias
+h.7.mlp.c_fc.weight
+h.7.mlp.c_fc.bias
+h.7.mlp.c_proj.weight
+h.7.mlp.c_proj.bias
+h.8.ln_1.weight
+h.8.ln_1.bias
+h.8.attn.c_attn.weight
+h.8.attn.c_attn.bias
+h.8.attn.c_proj.weight
+h.8.attn.c_proj.bias
+h.8.ln_2.weight
+h.8.ln_2.bias
+h.8.mlp.c_fc.weight
+h.8.mlp.c_fc.bias
+h.8.mlp.c_proj.weight
+h.8.mlp.c_proj.bias
+h.9.ln_1.weight
+h.9.ln_1.bias
+h.9.attn.c_attn.weight
+h.9.attn.c_attn.bias
+h.9.attn.c_proj.weight
+h.9.attn.c_proj.bias
+h.9.ln_2.weight
+h.9.ln_2.bias
+h.9.mlp.c_fc.weight
+h.9.mlp.c_fc.bias
+h.9.mlp.c_proj.weight
+h.9.mlp.c_proj.bias
+h.10.ln_1.weight
+h.10.ln_1.bias
+h.10.attn.c_attn.weight
+h.10.attn.c_attn.bias
+h.10.attn.c_proj.weight
+h.10.attn.c_proj.bias
+h.10.ln_2.weight
+h.10.ln_2.bias
+h.10.mlp.c_fc.weight
+h.10.mlp.c_fc.bias
+h.10.mlp.c_proj.weight
+h.10.mlp.c_proj.bias
+h.11.ln_1.weight
+h.11.ln_1.bias
+h.11.attn.c_attn.weight
+h.11.attn.c_attn.bias
+h.11.attn.c_proj.weight
+h.11.attn.c_proj.bias
+h.11.ln_2.weight
+h.11.ln_2.bias
+h.11.mlp.c_fc.weight
+h.11.mlp.c_fc.bias
+h.11.mlp.c_proj.weight
+h.11.mlp.c_proj.bias
+ln_f.weight
+ln_f.bias
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="phi-2-model-architecture">
+<h1>Phi 2 Model Architecture<a class="headerlink" href="#phi-2-model-architecture" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoModelForCausalLM</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">set_default_device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;microsoft/phi-2&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"version_major": 2, "version_minor": 0, "model_id": "b4086b5949bd4d3095a219a942d16bfa"}</script></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">modules</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;bound method Module.modules of PhiForCausalLM(
+  (model): PhiModel(
+    (embed_tokens): Embedding(51200, 2560)
+    (embed_dropout): Dropout(p=0.0, inplace=False)
+    (layers): ModuleList(
+      (0-31): 32 x PhiDecoderLayer(
+        (self_attn): PhiSdpaAttention(
+          (q_proj): Linear(in_features=2560, out_features=2560, bias=True)
+          (k_proj): Linear(in_features=2560, out_features=2560, bias=True)
+          (v_proj): Linear(in_features=2560, out_features=2560, bias=True)
+          (dense): Linear(in_features=2560, out_features=2560, bias=True)
+          (rotary_emb): PhiRotaryEmbedding()
+        )
+        (mlp): PhiMLP(
+          (activation_fn): NewGELUActivation()
+          (fc1): Linear(in_features=2560, out_features=10240, bias=True)
+          (fc2): Linear(in_features=10240, out_features=2560, bias=True)
+        )
+        (input_layernorm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+        (resid_dropout): Dropout(p=0.1, inplace=False)
+      )
+    )
+    (final_layernorm): LayerNorm((2560,), eps=1e-05, elementwise_affine=True)
+  )
+  (lm_head): Linear(in_features=2560, out_features=51200, bias=True)
+)&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sd</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sd</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>odict_keys([&#39;model.embed_tokens.weight&#39;, &#39;model.layers.0.self_attn.q_proj.weight&#39;, &#39;model.layers.0.self_attn.q_proj.bias&#39;, &#39;model.layers.0.self_attn.k_proj.weight&#39;, &#39;model.layers.0.self_attn.k_proj.bias&#39;, &#39;model.layers.0.self_attn.v_proj.weight&#39;, &#39;model.layers.0.self_attn.v_proj.bias&#39;, &#39;model.layers.0.self_attn.dense.weight&#39;, &#39;model.layers.0.self_attn.dense.bias&#39;, &#39;model.layers.0.mlp.fc1.weight&#39;, &#39;model.layers.0.mlp.fc1.bias&#39;, &#39;model.layers.0.mlp.fc2.weight&#39;, &#39;model.layers.0.mlp.fc2.bias&#39;, &#39;model.layers.0.input_layernorm.weight&#39;, &#39;model.layers.0.input_layernorm.bias&#39;, &#39;model.layers.1.self_attn.q_proj.weight&#39;, &#39;model.layers.1.self_attn.q_proj.bias&#39;, &#39;model.layers.1.self_attn.k_proj.weight&#39;, &#39;model.layers.1.self_attn.k_proj.bias&#39;, &#39;model.layers.1.self_attn.v_proj.weight&#39;, &#39;model.layers.1.self_attn.v_proj.bias&#39;, &#39;model.layers.1.self_attn.dense.weight&#39;, &#39;model.layers.1.self_attn.dense.bias&#39;, &#39;model.layers.1.mlp.fc1.weight&#39;, &#39;model.layers.1.mlp.fc1.bias&#39;, &#39;model.layers.1.mlp.fc2.weight&#39;, &#39;model.layers.1.mlp.fc2.bias&#39;, &#39;model.layers.1.input_layernorm.weight&#39;, &#39;model.layers.1.input_layernorm.bias&#39;, &#39;model.layers.2.self_attn.q_proj.weight&#39;, &#39;model.layers.2.self_attn.q_proj.bias&#39;, &#39;model.layers.2.self_attn.k_proj.weight&#39;, &#39;model.layers.2.self_attn.k_proj.bias&#39;, &#39;model.layers.2.self_attn.v_proj.weight&#39;, &#39;model.layers.2.self_attn.v_proj.bias&#39;, &#39;model.layers.2.self_attn.dense.weight&#39;, &#39;model.layers.2.self_attn.dense.bias&#39;, &#39;model.layers.2.mlp.fc1.weight&#39;, &#39;model.layers.2.mlp.fc1.bias&#39;, &#39;model.layers.2.mlp.fc2.weight&#39;, &#39;model.layers.2.mlp.fc2.bias&#39;, &#39;model.layers.2.input_layernorm.weight&#39;, &#39;model.layers.2.input_layernorm.bias&#39;, &#39;model.layers.3.self_attn.q_proj.weight&#39;, &#39;model.layers.3.self_attn.q_proj.bias&#39;, &#39;model.layers.3.self_attn.k_proj.weight&#39;, &#39;model.layers.3.self_attn.k_proj.bias&#39;, &#39;model.layers.3.self_attn.v_proj.weight&#39;, &#39;model.layers.3.self_attn.v_proj.bias&#39;, &#39;model.layers.3.self_attn.dense.weight&#39;, &#39;model.layers.3.self_attn.dense.bias&#39;, &#39;model.layers.3.mlp.fc1.weight&#39;, &#39;model.layers.3.mlp.fc1.bias&#39;, &#39;model.layers.3.mlp.fc2.weight&#39;, &#39;model.layers.3.mlp.fc2.bias&#39;, &#39;model.layers.3.input_layernorm.weight&#39;, &#39;model.layers.3.input_layernorm.bias&#39;, &#39;model.layers.4.self_attn.q_proj.weight&#39;, &#39;model.layers.4.self_attn.q_proj.bias&#39;, &#39;model.layers.4.self_attn.k_proj.weight&#39;, &#39;model.layers.4.self_attn.k_proj.bias&#39;, &#39;model.layers.4.self_attn.v_proj.weight&#39;, &#39;model.layers.4.self_attn.v_proj.bias&#39;, &#39;model.layers.4.self_attn.dense.weight&#39;, &#39;model.layers.4.self_attn.dense.bias&#39;, &#39;model.layers.4.mlp.fc1.weight&#39;, &#39;model.layers.4.mlp.fc1.bias&#39;, &#39;model.layers.4.mlp.fc2.weight&#39;, &#39;model.layers.4.mlp.fc2.bias&#39;, &#39;model.layers.4.input_layernorm.weight&#39;, &#39;model.layers.4.input_layernorm.bias&#39;, &#39;model.layers.5.self_attn.q_proj.weight&#39;, &#39;model.layers.5.self_attn.q_proj.bias&#39;, &#39;model.layers.5.self_attn.k_proj.weight&#39;, &#39;model.layers.5.self_attn.k_proj.bias&#39;, &#39;model.layers.5.self_attn.v_proj.weight&#39;, &#39;model.layers.5.self_attn.v_proj.bias&#39;, &#39;model.layers.5.self_attn.dense.weight&#39;, &#39;model.layers.5.self_attn.dense.bias&#39;, &#39;model.layers.5.mlp.fc1.weight&#39;, &#39;model.layers.5.mlp.fc1.bias&#39;, &#39;model.layers.5.mlp.fc2.weight&#39;, &#39;model.layers.5.mlp.fc2.bias&#39;, &#39;model.layers.5.input_layernorm.weight&#39;, &#39;model.layers.5.input_layernorm.bias&#39;, &#39;model.layers.6.self_attn.q_proj.weight&#39;, &#39;model.layers.6.self_attn.q_proj.bias&#39;, &#39;model.layers.6.self_attn.k_proj.weight&#39;, &#39;model.layers.6.self_attn.k_proj.bias&#39;, &#39;model.layers.6.self_attn.v_proj.weight&#39;, &#39;model.layers.6.self_attn.v_proj.bias&#39;, &#39;model.layers.6.self_attn.dense.weight&#39;, &#39;model.layers.6.self_attn.dense.bias&#39;, &#39;model.layers.6.mlp.fc1.weight&#39;, &#39;model.layers.6.mlp.fc1.bias&#39;, &#39;model.layers.6.mlp.fc2.weight&#39;, &#39;model.layers.6.mlp.fc2.bias&#39;, &#39;model.layers.6.input_layernorm.weight&#39;, &#39;model.layers.6.input_layernorm.bias&#39;, &#39;model.layers.7.self_attn.q_proj.weight&#39;, &#39;model.layers.7.self_attn.q_proj.bias&#39;, &#39;model.layers.7.self_attn.k_proj.weight&#39;, &#39;model.layers.7.self_attn.k_proj.bias&#39;, &#39;model.layers.7.self_attn.v_proj.weight&#39;, &#39;model.layers.7.self_attn.v_proj.bias&#39;, &#39;model.layers.7.self_attn.dense.weight&#39;, &#39;model.layers.7.self_attn.dense.bias&#39;, &#39;model.layers.7.mlp.fc1.weight&#39;, &#39;model.layers.7.mlp.fc1.bias&#39;, &#39;model.layers.7.mlp.fc2.weight&#39;, &#39;model.layers.7.mlp.fc2.bias&#39;, &#39;model.layers.7.input_layernorm.weight&#39;, &#39;model.layers.7.input_layernorm.bias&#39;, &#39;model.layers.8.self_attn.q_proj.weight&#39;, &#39;model.layers.8.self_attn.q_proj.bias&#39;, &#39;model.layers.8.self_attn.k_proj.weight&#39;, &#39;model.layers.8.self_attn.k_proj.bias&#39;, &#39;model.layers.8.self_attn.v_proj.weight&#39;, &#39;model.layers.8.self_attn.v_proj.bias&#39;, &#39;model.layers.8.self_attn.dense.weight&#39;, &#39;model.layers.8.self_attn.dense.bias&#39;, &#39;model.layers.8.mlp.fc1.weight&#39;, &#39;model.layers.8.mlp.fc1.bias&#39;, &#39;model.layers.8.mlp.fc2.weight&#39;, &#39;model.layers.8.mlp.fc2.bias&#39;, &#39;model.layers.8.input_layernorm.weight&#39;, &#39;model.layers.8.input_layernorm.bias&#39;, &#39;model.layers.9.self_attn.q_proj.weight&#39;, &#39;model.layers.9.self_attn.q_proj.bias&#39;, &#39;model.layers.9.self_attn.k_proj.weight&#39;, &#39;model.layers.9.self_attn.k_proj.bias&#39;, &#39;model.layers.9.self_attn.v_proj.weight&#39;, &#39;model.layers.9.self_attn.v_proj.bias&#39;, &#39;model.layers.9.self_attn.dense.weight&#39;, &#39;model.layers.9.self_attn.dense.bias&#39;, &#39;model.layers.9.mlp.fc1.weight&#39;, &#39;model.layers.9.mlp.fc1.bias&#39;, &#39;model.layers.9.mlp.fc2.weight&#39;, &#39;model.layers.9.mlp.fc2.bias&#39;, &#39;model.layers.9.input_layernorm.weight&#39;, &#39;model.layers.9.input_layernorm.bias&#39;, &#39;model.layers.10.self_attn.q_proj.weight&#39;, &#39;model.layers.10.self_attn.q_proj.bias&#39;, &#39;model.layers.10.self_attn.k_proj.weight&#39;, &#39;model.layers.10.self_attn.k_proj.bias&#39;, &#39;model.layers.10.self_attn.v_proj.weight&#39;, &#39;model.layers.10.self_attn.v_proj.bias&#39;, &#39;model.layers.10.self_attn.dense.weight&#39;, &#39;model.layers.10.self_attn.dense.bias&#39;, &#39;model.layers.10.mlp.fc1.weight&#39;, &#39;model.layers.10.mlp.fc1.bias&#39;, &#39;model.layers.10.mlp.fc2.weight&#39;, &#39;model.layers.10.mlp.fc2.bias&#39;, &#39;model.layers.10.input_layernorm.weight&#39;, &#39;model.layers.10.input_layernorm.bias&#39;, &#39;model.layers.11.self_attn.q_proj.weight&#39;, &#39;model.layers.11.self_attn.q_proj.bias&#39;, &#39;model.layers.11.self_attn.k_proj.weight&#39;, &#39;model.layers.11.self_attn.k_proj.bias&#39;, &#39;model.layers.11.self_attn.v_proj.weight&#39;, &#39;model.layers.11.self_attn.v_proj.bias&#39;, &#39;model.layers.11.self_attn.dense.weight&#39;, &#39;model.layers.11.self_attn.dense.bias&#39;, &#39;model.layers.11.mlp.fc1.weight&#39;, &#39;model.layers.11.mlp.fc1.bias&#39;, &#39;model.layers.11.mlp.fc2.weight&#39;, &#39;model.layers.11.mlp.fc2.bias&#39;, &#39;model.layers.11.input_layernorm.weight&#39;, &#39;model.layers.11.input_layernorm.bias&#39;, &#39;model.layers.12.self_attn.q_proj.weight&#39;, &#39;model.layers.12.self_attn.q_proj.bias&#39;, &#39;model.layers.12.self_attn.k_proj.weight&#39;, &#39;model.layers.12.self_attn.k_proj.bias&#39;, &#39;model.layers.12.self_attn.v_proj.weight&#39;, &#39;model.layers.12.self_attn.v_proj.bias&#39;, &#39;model.layers.12.self_attn.dense.weight&#39;, &#39;model.layers.12.self_attn.dense.bias&#39;, &#39;model.layers.12.mlp.fc1.weight&#39;, &#39;model.layers.12.mlp.fc1.bias&#39;, &#39;model.layers.12.mlp.fc2.weight&#39;, &#39;model.layers.12.mlp.fc2.bias&#39;, &#39;model.layers.12.input_layernorm.weight&#39;, &#39;model.layers.12.input_layernorm.bias&#39;, &#39;model.layers.13.self_attn.q_proj.weight&#39;, &#39;model.layers.13.self_attn.q_proj.bias&#39;, &#39;model.layers.13.self_attn.k_proj.weight&#39;, &#39;model.layers.13.self_attn.k_proj.bias&#39;, &#39;model.layers.13.self_attn.v_proj.weight&#39;, &#39;model.layers.13.self_attn.v_proj.bias&#39;, &#39;model.layers.13.self_attn.dense.weight&#39;, &#39;model.layers.13.self_attn.dense.bias&#39;, &#39;model.layers.13.mlp.fc1.weight&#39;, &#39;model.layers.13.mlp.fc1.bias&#39;, &#39;model.layers.13.mlp.fc2.weight&#39;, &#39;model.layers.13.mlp.fc2.bias&#39;, &#39;model.layers.13.input_layernorm.weight&#39;, &#39;model.layers.13.input_layernorm.bias&#39;, &#39;model.layers.14.self_attn.q_proj.weight&#39;, &#39;model.layers.14.self_attn.q_proj.bias&#39;, &#39;model.layers.14.self_attn.k_proj.weight&#39;, &#39;model.layers.14.self_attn.k_proj.bias&#39;, &#39;model.layers.14.self_attn.v_proj.weight&#39;, &#39;model.layers.14.self_attn.v_proj.bias&#39;, &#39;model.layers.14.self_attn.dense.weight&#39;, &#39;model.layers.14.self_attn.dense.bias&#39;, &#39;model.layers.14.mlp.fc1.weight&#39;, &#39;model.layers.14.mlp.fc1.bias&#39;, &#39;model.layers.14.mlp.fc2.weight&#39;, &#39;model.layers.14.mlp.fc2.bias&#39;, &#39;model.layers.14.input_layernorm.weight&#39;, &#39;model.layers.14.input_layernorm.bias&#39;, &#39;model.layers.15.self_attn.q_proj.weight&#39;, &#39;model.layers.15.self_attn.q_proj.bias&#39;, &#39;model.layers.15.self_attn.k_proj.weight&#39;, &#39;model.layers.15.self_attn.k_proj.bias&#39;, &#39;model.layers.15.self_attn.v_proj.weight&#39;, &#39;model.layers.15.self_attn.v_proj.bias&#39;, &#39;model.layers.15.self_attn.dense.weight&#39;, &#39;model.layers.15.self_attn.dense.bias&#39;, &#39;model.layers.15.mlp.fc1.weight&#39;, &#39;model.layers.15.mlp.fc1.bias&#39;, &#39;model.layers.15.mlp.fc2.weight&#39;, &#39;model.layers.15.mlp.fc2.bias&#39;, &#39;model.layers.15.input_layernorm.weight&#39;, &#39;model.layers.15.input_layernorm.bias&#39;, &#39;model.layers.16.self_attn.q_proj.weight&#39;, &#39;model.layers.16.self_attn.q_proj.bias&#39;, &#39;model.layers.16.self_attn.k_proj.weight&#39;, &#39;model.layers.16.self_attn.k_proj.bias&#39;, &#39;model.layers.16.self_attn.v_proj.weight&#39;, &#39;model.layers.16.self_attn.v_proj.bias&#39;, &#39;model.layers.16.self_attn.dense.weight&#39;, &#39;model.layers.16.self_attn.dense.bias&#39;, &#39;model.layers.16.mlp.fc1.weight&#39;, &#39;model.layers.16.mlp.fc1.bias&#39;, &#39;model.layers.16.mlp.fc2.weight&#39;, &#39;model.layers.16.mlp.fc2.bias&#39;, &#39;model.layers.16.input_layernorm.weight&#39;, &#39;model.layers.16.input_layernorm.bias&#39;, &#39;model.layers.17.self_attn.q_proj.weight&#39;, &#39;model.layers.17.self_attn.q_proj.bias&#39;, &#39;model.layers.17.self_attn.k_proj.weight&#39;, &#39;model.layers.17.self_attn.k_proj.bias&#39;, &#39;model.layers.17.self_attn.v_proj.weight&#39;, &#39;model.layers.17.self_attn.v_proj.bias&#39;, &#39;model.layers.17.self_attn.dense.weight&#39;, &#39;model.layers.17.self_attn.dense.bias&#39;, &#39;model.layers.17.mlp.fc1.weight&#39;, &#39;model.layers.17.mlp.fc1.bias&#39;, &#39;model.layers.17.mlp.fc2.weight&#39;, &#39;model.layers.17.mlp.fc2.bias&#39;, &#39;model.layers.17.input_layernorm.weight&#39;, &#39;model.layers.17.input_layernorm.bias&#39;, &#39;model.layers.18.self_attn.q_proj.weight&#39;, &#39;model.layers.18.self_attn.q_proj.bias&#39;, &#39;model.layers.18.self_attn.k_proj.weight&#39;, &#39;model.layers.18.self_attn.k_proj.bias&#39;, &#39;model.layers.18.self_attn.v_proj.weight&#39;, &#39;model.layers.18.self_attn.v_proj.bias&#39;, &#39;model.layers.18.self_attn.dense.weight&#39;, &#39;model.layers.18.self_attn.dense.bias&#39;, &#39;model.layers.18.mlp.fc1.weight&#39;, &#39;model.layers.18.mlp.fc1.bias&#39;, &#39;model.layers.18.mlp.fc2.weight&#39;, &#39;model.layers.18.mlp.fc2.bias&#39;, &#39;model.layers.18.input_layernorm.weight&#39;, &#39;model.layers.18.input_layernorm.bias&#39;, &#39;model.layers.19.self_attn.q_proj.weight&#39;, &#39;model.layers.19.self_attn.q_proj.bias&#39;, &#39;model.layers.19.self_attn.k_proj.weight&#39;, &#39;model.layers.19.self_attn.k_proj.bias&#39;, &#39;model.layers.19.self_attn.v_proj.weight&#39;, &#39;model.layers.19.self_attn.v_proj.bias&#39;, &#39;model.layers.19.self_attn.dense.weight&#39;, &#39;model.layers.19.self_attn.dense.bias&#39;, &#39;model.layers.19.mlp.fc1.weight&#39;, &#39;model.layers.19.mlp.fc1.bias&#39;, &#39;model.layers.19.mlp.fc2.weight&#39;, &#39;model.layers.19.mlp.fc2.bias&#39;, &#39;model.layers.19.input_layernorm.weight&#39;, &#39;model.layers.19.input_layernorm.bias&#39;, &#39;model.layers.20.self_attn.q_proj.weight&#39;, &#39;model.layers.20.self_attn.q_proj.bias&#39;, &#39;model.layers.20.self_attn.k_proj.weight&#39;, &#39;model.layers.20.self_attn.k_proj.bias&#39;, &#39;model.layers.20.self_attn.v_proj.weight&#39;, &#39;model.layers.20.self_attn.v_proj.bias&#39;, &#39;model.layers.20.self_attn.dense.weight&#39;, &#39;model.layers.20.self_attn.dense.bias&#39;, &#39;model.layers.20.mlp.fc1.weight&#39;, &#39;model.layers.20.mlp.fc1.bias&#39;, &#39;model.layers.20.mlp.fc2.weight&#39;, &#39;model.layers.20.mlp.fc2.bias&#39;, &#39;model.layers.20.input_layernorm.weight&#39;, &#39;model.layers.20.input_layernorm.bias&#39;, &#39;model.layers.21.self_attn.q_proj.weight&#39;, &#39;model.layers.21.self_attn.q_proj.bias&#39;, &#39;model.layers.21.self_attn.k_proj.weight&#39;, &#39;model.layers.21.self_attn.k_proj.bias&#39;, &#39;model.layers.21.self_attn.v_proj.weight&#39;, &#39;model.layers.21.self_attn.v_proj.bias&#39;, &#39;model.layers.21.self_attn.dense.weight&#39;, &#39;model.layers.21.self_attn.dense.bias&#39;, &#39;model.layers.21.mlp.fc1.weight&#39;, &#39;model.layers.21.mlp.fc1.bias&#39;, &#39;model.layers.21.mlp.fc2.weight&#39;, &#39;model.layers.21.mlp.fc2.bias&#39;, &#39;model.layers.21.input_layernorm.weight&#39;, &#39;model.layers.21.input_layernorm.bias&#39;, &#39;model.layers.22.self_attn.q_proj.weight&#39;, &#39;model.layers.22.self_attn.q_proj.bias&#39;, &#39;model.layers.22.self_attn.k_proj.weight&#39;, &#39;model.layers.22.self_attn.k_proj.bias&#39;, &#39;model.layers.22.self_attn.v_proj.weight&#39;, &#39;model.layers.22.self_attn.v_proj.bias&#39;, &#39;model.layers.22.self_attn.dense.weight&#39;, &#39;model.layers.22.self_attn.dense.bias&#39;, &#39;model.layers.22.mlp.fc1.weight&#39;, &#39;model.layers.22.mlp.fc1.bias&#39;, &#39;model.layers.22.mlp.fc2.weight&#39;, &#39;model.layers.22.mlp.fc2.bias&#39;, &#39;model.layers.22.input_layernorm.weight&#39;, &#39;model.layers.22.input_layernorm.bias&#39;, &#39;model.layers.23.self_attn.q_proj.weight&#39;, &#39;model.layers.23.self_attn.q_proj.bias&#39;, &#39;model.layers.23.self_attn.k_proj.weight&#39;, &#39;model.layers.23.self_attn.k_proj.bias&#39;, &#39;model.layers.23.self_attn.v_proj.weight&#39;, &#39;model.layers.23.self_attn.v_proj.bias&#39;, &#39;model.layers.23.self_attn.dense.weight&#39;, &#39;model.layers.23.self_attn.dense.bias&#39;, &#39;model.layers.23.mlp.fc1.weight&#39;, &#39;model.layers.23.mlp.fc1.bias&#39;, &#39;model.layers.23.mlp.fc2.weight&#39;, &#39;model.layers.23.mlp.fc2.bias&#39;, &#39;model.layers.23.input_layernorm.weight&#39;, &#39;model.layers.23.input_layernorm.bias&#39;, &#39;model.layers.24.self_attn.q_proj.weight&#39;, &#39;model.layers.24.self_attn.q_proj.bias&#39;, &#39;model.layers.24.self_attn.k_proj.weight&#39;, &#39;model.layers.24.self_attn.k_proj.bias&#39;, &#39;model.layers.24.self_attn.v_proj.weight&#39;, &#39;model.layers.24.self_attn.v_proj.bias&#39;, &#39;model.layers.24.self_attn.dense.weight&#39;, &#39;model.layers.24.self_attn.dense.bias&#39;, &#39;model.layers.24.mlp.fc1.weight&#39;, &#39;model.layers.24.mlp.fc1.bias&#39;, &#39;model.layers.24.mlp.fc2.weight&#39;, &#39;model.layers.24.mlp.fc2.bias&#39;, &#39;model.layers.24.input_layernorm.weight&#39;, &#39;model.layers.24.input_layernorm.bias&#39;, &#39;model.layers.25.self_attn.q_proj.weight&#39;, &#39;model.layers.25.self_attn.q_proj.bias&#39;, &#39;model.layers.25.self_attn.k_proj.weight&#39;, &#39;model.layers.25.self_attn.k_proj.bias&#39;, &#39;model.layers.25.self_attn.v_proj.weight&#39;, &#39;model.layers.25.self_attn.v_proj.bias&#39;, &#39;model.layers.25.self_attn.dense.weight&#39;, &#39;model.layers.25.self_attn.dense.bias&#39;, &#39;model.layers.25.mlp.fc1.weight&#39;, &#39;model.layers.25.mlp.fc1.bias&#39;, &#39;model.layers.25.mlp.fc2.weight&#39;, &#39;model.layers.25.mlp.fc2.bias&#39;, &#39;model.layers.25.input_layernorm.weight&#39;, &#39;model.layers.25.input_layernorm.bias&#39;, &#39;model.layers.26.self_attn.q_proj.weight&#39;, &#39;model.layers.26.self_attn.q_proj.bias&#39;, &#39;model.layers.26.self_attn.k_proj.weight&#39;, &#39;model.layers.26.self_attn.k_proj.bias&#39;, &#39;model.layers.26.self_attn.v_proj.weight&#39;, &#39;model.layers.26.self_attn.v_proj.bias&#39;, &#39;model.layers.26.self_attn.dense.weight&#39;, &#39;model.layers.26.self_attn.dense.bias&#39;, &#39;model.layers.26.mlp.fc1.weight&#39;, &#39;model.layers.26.mlp.fc1.bias&#39;, &#39;model.layers.26.mlp.fc2.weight&#39;, &#39;model.layers.26.mlp.fc2.bias&#39;, &#39;model.layers.26.input_layernorm.weight&#39;, &#39;model.layers.26.input_layernorm.bias&#39;, &#39;model.layers.27.self_attn.q_proj.weight&#39;, &#39;model.layers.27.self_attn.q_proj.bias&#39;, &#39;model.layers.27.self_attn.k_proj.weight&#39;, &#39;model.layers.27.self_attn.k_proj.bias&#39;, &#39;model.layers.27.self_attn.v_proj.weight&#39;, &#39;model.layers.27.self_attn.v_proj.bias&#39;, &#39;model.layers.27.self_attn.dense.weight&#39;, &#39;model.layers.27.self_attn.dense.bias&#39;, &#39;model.layers.27.mlp.fc1.weight&#39;, &#39;model.layers.27.mlp.fc1.bias&#39;, &#39;model.layers.27.mlp.fc2.weight&#39;, &#39;model.layers.27.mlp.fc2.bias&#39;, &#39;model.layers.27.input_layernorm.weight&#39;, &#39;model.layers.27.input_layernorm.bias&#39;, &#39;model.layers.28.self_attn.q_proj.weight&#39;, &#39;model.layers.28.self_attn.q_proj.bias&#39;, &#39;model.layers.28.self_attn.k_proj.weight&#39;, &#39;model.layers.28.self_attn.k_proj.bias&#39;, &#39;model.layers.28.self_attn.v_proj.weight&#39;, &#39;model.layers.28.self_attn.v_proj.bias&#39;, &#39;model.layers.28.self_attn.dense.weight&#39;, &#39;model.layers.28.self_attn.dense.bias&#39;, &#39;model.layers.28.mlp.fc1.weight&#39;, &#39;model.layers.28.mlp.fc1.bias&#39;, &#39;model.layers.28.mlp.fc2.weight&#39;, &#39;model.layers.28.mlp.fc2.bias&#39;, &#39;model.layers.28.input_layernorm.weight&#39;, &#39;model.layers.28.input_layernorm.bias&#39;, &#39;model.layers.29.self_attn.q_proj.weight&#39;, &#39;model.layers.29.self_attn.q_proj.bias&#39;, &#39;model.layers.29.self_attn.k_proj.weight&#39;, &#39;model.layers.29.self_attn.k_proj.bias&#39;, &#39;model.layers.29.self_attn.v_proj.weight&#39;, &#39;model.layers.29.self_attn.v_proj.bias&#39;, &#39;model.layers.29.self_attn.dense.weight&#39;, &#39;model.layers.29.self_attn.dense.bias&#39;, &#39;model.layers.29.mlp.fc1.weight&#39;, &#39;model.layers.29.mlp.fc1.bias&#39;, &#39;model.layers.29.mlp.fc2.weight&#39;, &#39;model.layers.29.mlp.fc2.bias&#39;, &#39;model.layers.29.input_layernorm.weight&#39;, &#39;model.layers.29.input_layernorm.bias&#39;, &#39;model.layers.30.self_attn.q_proj.weight&#39;, &#39;model.layers.30.self_attn.q_proj.bias&#39;, &#39;model.layers.30.self_attn.k_proj.weight&#39;, &#39;model.layers.30.self_attn.k_proj.bias&#39;, &#39;model.layers.30.self_attn.v_proj.weight&#39;, &#39;model.layers.30.self_attn.v_proj.bias&#39;, &#39;model.layers.30.self_attn.dense.weight&#39;, &#39;model.layers.30.self_attn.dense.bias&#39;, &#39;model.layers.30.mlp.fc1.weight&#39;, &#39;model.layers.30.mlp.fc1.bias&#39;, &#39;model.layers.30.mlp.fc2.weight&#39;, &#39;model.layers.30.mlp.fc2.bias&#39;, &#39;model.layers.30.input_layernorm.weight&#39;, &#39;model.layers.30.input_layernorm.bias&#39;, &#39;model.layers.31.self_attn.q_proj.weight&#39;, &#39;model.layers.31.self_attn.q_proj.bias&#39;, &#39;model.layers.31.self_attn.k_proj.weight&#39;, &#39;model.layers.31.self_attn.k_proj.bias&#39;, &#39;model.layers.31.self_attn.v_proj.weight&#39;, &#39;model.layers.31.self_attn.v_proj.bias&#39;, &#39;model.layers.31.self_attn.dense.weight&#39;, &#39;model.layers.31.self_attn.dense.bias&#39;, &#39;model.layers.31.mlp.fc1.weight&#39;, &#39;model.layers.31.mlp.fc1.bias&#39;, &#39;model.layers.31.mlp.fc2.weight&#39;, &#39;model.layers.31.mlp.fc2.bias&#39;, &#39;model.layers.31.input_layernorm.weight&#39;, &#39;model.layers.31.input_layernorm.bias&#39;, &#39;model.final_layernorm.weight&#39;, &#39;model.final_layernorm.bias&#39;, &#39;lm_head.weight&#39;, &#39;lm_head.bias&#39;])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">GPT Family Architecture</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt-1">GPT-1</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#phi-2-model-architecture">Phi 2 Model Architecture</a></li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gopi Subramanian
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

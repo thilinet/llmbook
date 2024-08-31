@@ -1,0 +1,2110 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Chapter 1 - Input to LLMs &#8212; Learn Large Language Models Fast</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chapter1/chapter1';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Chapter 2 - Transformer Architecture" href="../chapter2/chapter2.html" />
+    <link rel="prev" title="Learn Large Language Models Fast" href="../../intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/llm_t.png" class="logo__image only-light" alt="Learn Large Language Models Fast - Home"/>
+    <script>document.write(`<img src="../../_static/llm_t.png" class="logo__image only-dark" alt="Learn Large Language Models Fast - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    Learn Large Language Models Fast
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Chapter 1 - Input to LLMs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter2/chapter2.html">Chapter 2 - Transformer Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter3/chapter3.html">Chapter 3 - Pre-train a tiny LLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter4.html">Chapter 4 - Fine tuning a LLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter5.html">Chapter 5 - Instruction Fine Tuning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter6.html">Chapter 6 - Prompt Engineering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter8.html">Chapter 8 - LLM Agents Development Ecosystem</a></li>
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chapter9.html">Chapter 7 - Rag based applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10.html">Chapter 6 - Artificial General Intelligence</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fchapters/chapter1/chapter1.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chapter1/chapter1.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Chapter 1 - Input to LLMs</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sample-text-corpus">A Sample Text corpus</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-simplebooks">Structure of simplebooks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-pipeline">Tokenization Pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalization">Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-tokenization">Pre-tokenization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenizer-models-dictionary-training">Tokenizer models - Dictionary Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bye-pair-encoding">Bye pair encoding</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing">Post Processing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#huggingface-libraries">HuggingFace Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-custom-dictionary">Train a custom dictionary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-books-pytorch-dataset">Simple Books Pytorch Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word-embedding">Word embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-embedding">Position Embedding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relative-position-embedding">Relative Position embedding</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-data-engineering">Pre-training data engineering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">Data sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">Data pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#privacy-and-eithical-cosiderations">Privacy and eithical cosiderations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclustion">Conclustion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="chapter-1-input-to-llms">
+<h1>Chapter 1 - Input to LLMs<a class="headerlink" href="#chapter-1-input-to-llms" title="Link to this heading">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading">#</a></h2>
+<p>LLM models take input as text and produce output as text. However, deep learning networks cannot work with text symbols. Hence the text must be represented in a continuous space. In this chapter, we will look at how to pre-process text input so it’s malleable for a large language model to consume.</p>
+<p>Figure 1 shows the basic blocks of this operation.</p>
+<figure class="align-default" id="preprocessing">
+<span id="reference-preprocessing"></span><a class="reference internal image-reference" href="../../_images/input_creation.png"><img alt="../../_images/input_creation.png" src="../../_images/input_creation.png" style="height: 150px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Input preprocessing blocks</span><a class="headerlink" href="#preprocessing" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Before we understand the nueances involved in each of these steps,
+let us do a simple outline of what happens in each of these blocks using a no frill example.</p>
+<section id="no-frill-example">
+<span id="reference-nofrill"></span><h3>No frill example<a class="headerlink" href="#no-frill-example" title="Link to this heading">#</a></h3>
+<p>A causal large language model, also refered to autoregresive model is trained to do the next word prediction. From a vocabulary of words, given a sequence of words, the causal model predicts the most probable next word from the vocabulary. Causal model are trained on a bunch of documents. Documents are composed of words and each word is composed of characters. In our example, word will be lowest denomination of operation.We use the term corpus to refer to these input documents. The lowest denomination in this corpus is word, typically referred called tokens. The set of unique tokens in the corpus is called vocabulary.</p>
+<p>Let us take a sample paragraph, our corpus for this exercise, and apply a regular expression to split the paragraph by whitespace or special characters. The resultant list of words forms the tokens for this corpus.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c1"># /* Text borrowed from https://www.tntech.edu/cas/physics/aboutphys/about-physics.php */</span>
+<span class="n">text_corpus</span> <span class="o">=</span> <span class="s2">&quot;Broadly, physics involves the study of everything in physical existence,&quot;</span> <span class="o">+</span> \
+<span class="s2">&quot;from the smallest subatomic particles to the entire universe. Physicists try &quot;</span> <span class="o">+</span> \
+<span class="s2">&quot;to develop conceptual and mathematical models that describe interactions between entities &quot;</span> <span class="o">+</span> \
+<span class="s2">&quot;(both big and small) and that can be used to extend our understanding of how the &quot;</span><span class="o">+</span> \
+<span class="s2">&quot;universe works at different scales. Are you interested in studying physics?&quot;</span>
+
+
+<span class="n">split_expr</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;([?.#$&amp;*^@,)(]|\s)&#39;</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_expr</span><span class="p">,</span> <span class="n">text_corpus</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;Broadly&#39;, &#39;,&#39;, &#39;physics&#39;, &#39;involves&#39;, &#39;the&#39;, &#39;study&#39;, &#39;of&#39;, &#39;everything&#39;, &#39;in&#39;, &#39;physical&#39;, &#39;existence&#39;, &#39;,&#39;, &#39;from&#39;, &#39;the&#39;, &#39;smallest&#39;, &#39;subatomic&#39;, &#39;particles&#39;, &#39;to&#39;, &#39;the&#39;, &#39;entire&#39;, &#39;universe&#39;, &#39;.&#39;, &#39;Physicists&#39;, &#39;try&#39;, &#39;to&#39;, &#39;develop&#39;, &#39;conceptual&#39;, &#39;and&#39;, &#39;mathematical&#39;, &#39;models&#39;, &#39;that&#39;, &#39;describe&#39;, &#39;interactions&#39;, &#39;between&#39;, &#39;entities&#39;, &#39;(&#39;, &#39;both&#39;, &#39;big&#39;, &#39;and&#39;, &#39;small&#39;, &#39;)&#39;, &#39;and&#39;, &#39;that&#39;, &#39;can&#39;, &#39;be&#39;, &#39;used&#39;, &#39;to&#39;, &#39;extend&#39;, &#39;our&#39;, &#39;understanding&#39;, &#39;of&#39;, &#39;how&#39;, &#39;the&#39;, &#39;universe&#39;, &#39;works&#39;, &#39;at&#39;, &#39;different&#39;, &#39;scales&#39;, &#39;.&#39;, &#39;Are&#39;, &#39;you&#39;, &#39;interested&#39;, &#39;in&#39;, &#39;studying&#39;, &#39;physics&#39;, &#39;?&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the above example we have a r before the string. This informs python interpreter to treat
+blackslash as raw character and not as escape character.</p>
+</div>
+<p>The set of unique tokens forms our vocabulary. Further we assign a unique id for each token.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocabulary</span> <span class="o">=</span> <span class="p">{</span><span class="n">token</span><span class="p">:</span><span class="n">token_id</span> <span class="k">for</span> <span class="n">token_id</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">tokens</span><span class="p">))}</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vocabulary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Are&#39;: 0, &#39;try&#39;: 1, &#39;smallest&#39;: 2, &#39;the&#39;: 3, &#39;,&#39;: 4, &#39;interactions&#39;: 5, &#39;how&#39;: 6, &#39;everything&#39;: 7, &#39;between&#39;: 8, &#39;Broadly&#39;: 9, &#39;different&#39;: 10, &#39;physics&#39;: 11, &#39;?&#39;: 12, &#39;conceptual&#39;: 13, &#39;involves&#39;: 14, &#39;universe&#39;: 15, &#39;in&#39;: 16, &#39;both&#39;: 17, &#39;physical&#39;: 18, &#39;particles&#39;: 19, &#39;works&#39;: 20, &#39;to&#39;: 21, &#39;interested&#39;: 22, &#39;and&#39;: 23, &#39;models&#39;: 24, &#39;studying&#39;: 25, &#39;subatomic&#39;: 26, &#39;big&#39;: 27, &#39;entire&#39;: 28, &#39;you&#39;: 29, &#39;mathematical&#39;: 30, &#39;describe&#39;: 31, &#39;small&#39;: 32, &#39;our&#39;: 33, &#39;(&#39;: 34, &#39;that&#39;: 35, &#39;used&#39;: 36, &#39;develop&#39;: 37, &#39;understanding&#39;: 38, &#39;from&#39;: 39, &#39;)&#39;: 40, &#39;can&#39;: 41, &#39;.&#39;: 42, &#39;Physicists&#39;: 43, &#39;of&#39;: 44, &#39;entities&#39;: 45, &#39;existence&#39;: 46, &#39;at&#39;: 47, &#39;scales&#39;: 48, &#39;study&#39;: 49, &#39;be&#39;: 50, &#39;extend&#39;: 51}
+</pre></div>
+</div>
+</div>
+</div>
+<p>With this vocabulary we can now encode any input string into a list of integers / token ids.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Size of the vocabulary plays a great part in building the LLM. The challenge is to have a compact vocabulary and
+still try to cover maxium amount of tokens in the corpus. We will discuss
+more in this chapter about modeling exercise to build a compact vocabulary. The illustration given here is a very
+simplified example.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_text</span> <span class="o">=</span> <span class="s2">&quot;universe works at different scales&quot;</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_expr</span><span class="p">,</span> <span class="n">input_text</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">encoded_input</span> <span class="o">=</span> <span class="p">[</span><span class="n">vocabulary</span><span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">encoded_input</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[15, 20, 47, 10, 48]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We have succesfully converted our word tokens into token id. Though this is now in number space, neural networks cannot process it. We need the input in a continous space. Here is where word embedding comes in handy. Let us build a embedding lookup table. The keys of this look up table are our integer word token ids. The value are a continous representation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;vocabulary size </span><span class="si">{</span><span class="n">vocab_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">embedding_size</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">word_embedding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_size</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Word Embedding shape </span><span class="si">{</span><span class="n">word_embedding</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">word_embedding</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>vocabulary size 51
+Word Embedding shape (51, 5)
+[[0.24217127 0.4895298  0.05846666 0.33636977 0.91755424]
+ [0.42416062 0.68562903 0.88463391 0.72601295 0.62484812]
+ [0.46895522 0.42249376 0.5361452  0.76493549 0.50700275]
+ [0.14510643 0.24248175 0.54010953 0.41243876 0.36974284]
+ [0.34719597 0.31372874 0.94155603 0.45545349 0.68921249]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here we build an embedding lookup table. Our embedding dimension is set to 5. We create a look up table where rows represent the token and
+the columns represent the embedding for those words. The embeddings are random real numbers representing the words in a continous space.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_embedding</span> <span class="o">=</span> <span class="n">word_embedding</span><span class="p">[</span><span class="n">encoded_input</span><span class="p">,:]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">input_embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">input_embedding</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(5, 5)
+[[0.05004503 0.36282998 0.28445894 0.03218699 0.34808098]
+ [0.43702596 0.45897977 0.44983999 0.20191379 0.8894771 ]
+ [0.53389632 0.58028317 0.75700156 0.77105781 0.6328717 ]
+ [0.75330164 0.23576875 0.87054955 0.20799213 0.27219933]
+ [0.46053796 0.32578757 0.06738546 0.43310685 0.70020016]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Word positions carry semantic information. In addition to the words, providing the position of the words
+will be benefial to the model. Similar to word embedding, we will create a look up for the position embedding.
+Let us assume a simple case here. The input size to our LLM is fixed, say 10. We will call it as the sequence length.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sequence_length</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">position_embedding_lookup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">sequence_length</span><span class="p">,</span> <span class="n">embedding_size</span><span class="p">))</span>
+
+<span class="n">position_index</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">input_embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">position_embedding</span> <span class="o">=</span> <span class="n">position_embedding_lookup</span><span class="p">[</span><span class="n">position_index</span><span class="p">,</span> <span class="p">:]</span>
+
+<span class="n">position_embedding</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[0.60079681, 0.34200229, 0.08476284, 0.88270262, 0.69083459],
+       [0.43599163, 0.34487251, 0.41266311, 0.68373054, 0.48059755]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The embedding size is same as the word embedding. Finally we can now add the position embedding to word embedding</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final_embedding</span> <span class="o">=</span> <span class="n">input_embedding</span> <span class="o">+</span> <span class="n">position_embedding</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Typical of any deep learning model, feature values X and label value Y are fed into Large language model. The main job of a casual model is to predict the next given word.</p>
+<p>Let us see how we can quickly prepare the input X and the label Y for our LLM.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_expr</span><span class="p">,</span> <span class="n">text_corpus</span><span class="p">)</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">token_encoding</span> <span class="o">=</span> <span class="p">[</span><span class="n">vocabulary</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">]</span>
+
+<span class="n">feature_batch</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">label_batch</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">slide</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">-</span> <span class="n">sequence_length</span> <span class="p">)</span> <span class="p">:</span>
+    <span class="n">feature</span> <span class="o">=</span> <span class="n">token_encoding</span><span class="p">[</span><span class="n">idx</span><span class="p">:</span><span class="n">idx</span> <span class="o">+</span> <span class="n">sequence_length</span><span class="p">]</span>
+    <span class="n">label</span> <span class="o">=</span>   <span class="n">token_encoding</span><span class="p">[</span><span class="n">idx</span> <span class="o">+</span> <span class="n">slide</span><span class="p">:</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">slide</span> <span class="o">+</span> <span class="n">sequence_length</span><span class="p">]</span>
+
+    <span class="n">feature_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="p">)</span>
+    <span class="n">label_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a feature : </span><span class="si">{</span><span class="n">feature_batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;a label   : </span><span class="si">{</span><span class="n">label_batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>a feature : [9, 4, 11, 14, 3, 49, 44, 7, 16, 18]
+a label   : [4, 11, 14, 3, 49, 44, 7, 16, 18, 46]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Givent the token id 7, we want the LLM to predict 35, now given 35 we want it to predict 16 and so on. By sliding the feature 1 level to the right, we get the token ids for the labels.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Sliding is a design decision. For demonstration purpose we have used a slide of 1. This may lead to overfitting in some cases.</p>
+</div>
+<p>With these we can further get the embeddings throught he lookup table we have created.</p>
+<p>Hopefully this gives a summary of all the steps involved in preparing the input for a LLM.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The examples are trivialized in this chapter. The goal is to understand the <a class="reference external" href="http://datapipeline.In">datapipeline.In</a> realworld the pipelines are much complex. To quote from llama3 description,</p>
+<p>“Llama 3 is pretrained on over 15T tokens that were all collected from publicly available sources. Our training dataset is seven times larger than that used for Llama 2, and it includes four times more code. To prepare for upcoming multilingual use cases, over 5% of the Llama 3 pretraining dataset consists of high-quality non-English data that covers over 30 languages. “</p>
+<p>writing a pipline to process fifteen trillion tokens is a work of a large team of data engineers with sophisticated hardware.</p>
+<p>“To ensure Llama 3 is trained on data of the highest quality, we developed a series of data-filtering pipelines. These pipelines include using heuristic filters, NSFW filters, semantic deduplication approaches, and text classifiers to predict data quality. We found that previous generations of Llama are surprisingly good at identifying high-quality data, hence we used Llama 2 to generate the training data for the text-quality classifiers that are powering Llama 3.”</p>
+<p>Further to ensure good quality training data a lot of pre-processing work needs to be performed. Covering all of htem is outside the scope of this work. However we have touched upon some of the essential pre-processing topics.</p>
+<p><a class="reference external" href="https://ai.meta.com/blog/meta-llama-3/">https://ai.meta.com/blog/meta-llama-3/</a></p>
+</div>
+</section>
+</section>
+<section id="a-sample-text-corpus">
+<h2>A Sample Text corpus<a class="headerlink" href="#a-sample-text-corpus" title="Link to this heading">#</a></h2>
+<p>Publicly and privately available LLMs leverage the text data available in world wide web to do the pre-training. In the no frill section, we showed how the features and labels needed to train an LLM comes from the same source, sliding the features leaves us with the label. This can done in an unsupervised manner, saving the labor needed to create large training dataset. In the GPT-1 paper <span id="id1">[<a class="reference internal" href="../../intro.html#id2" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, the authors call this training process as unsupervised pre-training. GPT-1 was trained with Bookcorpus dataset <span id="id2">[<a class="reference internal" href="../../intro.html#id4" title="Yukun Zhu, Ryan Kiros, Richard Zemel, Ruslan Salakhutdinov, Raquel Urtasun, Antonio Torralba, and Sanja Fidler. Aligning books and movies: towards story-like visual explanations by watching movies and reading books. 2015. arXiv:1506.06724.">ZKZ+15</a>]</span>.</p>
+<p>Loading input text from desparate sources is a tedious undertaking. LLMs are trained on Terra Bytes of data. Complex data pipelines are orchestrated to
+extract and validate the data. Details of those pipelines are beyond the scope of the book. Here is a quote from <span id="id3">[<a class="reference internal" href="../../intro.html#id3" title="Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, Dan Bikel, Lukas Blecher, Cristian Canton Ferrer, Moya Chen, Guillem Cucurull, David Esiobu, Jude Fernandes, Jeremy Fu, Wenyin Fu, Brian Fuller, Cynthia Gao, Vedanuj Goswami, Naman Goyal, Anthony Hartshorn, Saghar Hosseini, Rui Hou, Hakan Inan, Marcin Kardas, Viktor Kerkez, Madian Khabsa, Isabel Kloumann, Artem Korenev, Punit Singh Koura, Marie-Anne Lachaux, Thibaut Lavril, Jenya Lee, Diana Liskovich, Yinghai Lu, Yuning Mao, Xavier Martinet, Todor Mihaylov, Pushkar Mishra, Igor Molybog, Yixin Nie, Andrew Poulton, Jeremy Reizenstein, Rashi Rungta, Kalyan Saladi, Alan Schelten, Ruan Silva, Eric Michael Smith, Ranjan Subramanian, Xiaoqing Ellen Tan, Binh Tang, Ross Taylor, Adina Williams, Jian Xiang Kuan, Puxin Xu, Zheng Yan, Iliyan Zarov, Yuchen Zhang, Angela Fan, Melanie Kambadur, Sharan Narang, Aurelien Rodriguez, Robert Stojnic, Sergey Edunov, and Thomas Scialom. Llama 2: open foundation and fine-tuned chat models. 2023. arXiv:2307.09288.">TMS+23</a>]</span>, “Our training corpus includes a new mix of data from publicly available sources, which does not include data
+from Meta’s products or services. We made an effort to remove data from certain sites known to contain a
+high volume of personal information about private individuals. We trained on 2 trillion tokens of data as this
+provides a good performance–cost trade-off, up-sampling the most factual sources in an effort to increase
+knowledge and dampen hallucinations.”</p>
+<p>To give an idea about loading the corpus, we will use Simplebooks <span id="id4">[<a class="reference internal" href="../../intro.html#id5" title="Huyen Nguyen. Simplebooks: long-term dependency book dataset with simplified english vocabulary for word-level language modeling. 2019. arXiv:1911.12391.">Ngu19</a>]</span>. After downloading the dataset, we will show how to leverage hugginface’s dataset libary to load the dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+
+<span class="k">def</span> <span class="nf">download_simplebooks</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download simple books dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://dldata-public.s3.us-east-2.amazonaws.com/simplebooks.zip&quot;</span>
+    <span class="n">http_response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">zipfile</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">http_response</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">zipfile</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished downloading and extracting simplebooks.zip&quot;</span><span class="p">)</span>
+                      
+    
+<span class="n">download_simplebooks</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_132157</span><span class="o">/</span><span class="mf">4065309741.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> 
+<span class="g g-Whitespace">     </span><span class="mi">15</span> 
+<span class="ne">---&gt; </span><span class="mi">16</span> <span class="n">download_simplebooks</span><span class="p">()</span>
+
+<span class="ne">TypeError</span>: download_simplebooks() missing 1 required positional argument: &#39;destination&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="structure-of-simplebooks">
+<h3>Structure of simplebooks<a class="headerlink" href="#structure-of-simplebooks" title="Link to this heading">#</a></h3>
+<p>From project gutenberg, 1573 books were selected, mostly children book and simplebooks dataset was created.
+Simplebooks, when downloaded comes with datasets in two sizes.Simplebooks-2 is of size 11MB with a vocabulary size of 11,492 and Simplebooks-92
+of size roughly 400MB with a vocabulary size of 98,304. Simplebooks-2 has 2.2 M tokens. Compared to llama-2 which uses 2 trillion tokens, Simplebooks
+is a small dataset which can be used write code to study LLMs.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>!ls ../data/simplebooks
+README.md  simplebooks-2  simplebooks-2-raw  simplebooks-92  simplebooks-92-raw
+</pre></div>
+</div>
+<p>Both simplebooks-2 and simplebooks-92 has folders with raw suffix. The raw suffixed folders have the data with no changes from gutenberg source. The following normalization were performed on raw suffixed folders and the results are in non raw suffixed folders.</p>
+<ol class="arabic simple">
+<li><p>Spacy was used to tokenize each book. Original case and punctuations were preserved.</p></li>
+<li><p>&#64; was added as separator for numbers. So 300,000 becomes 300 &#64;,&#64; 000.</p></li>
+</ol>
+<p>Each of the folder have train, test and validation split and vocabulary files.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>!ls ../data/simplebooks/simplebooks-2
+test.txt  train.txt  train.vocab  valid.txt
+</pre></div>
+</div>
+<p>simplebooks-2 and simplebooks-92 have the cleaned up data. The vocabulary built after applying pre-tokenization on the normalized text is also stored. A quick peek at the train files should show the difference.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span><span class="w"> </span>../../data/simplebooks/simplebooks-2/train.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>More &lt;unk&gt; Tales
+
+By
+
+Ellen C. &lt;unk&gt;
+
+
+
+I
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">15</span><span class="w"> </span>../data/simplebooks/simplebooks-2-raw/train.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>More Jataka Tales
+
+By
+
+Ellen C. Babbitt
+
+
+
+I
+
+The Girl Monkey And The String Of Pearls
+
+
+One day the king went for a long walk in the woods. When he came back to his own garden, he sent for his family to come down to the lake for a swim.
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a part of pre-tokenization some of the uknown words like Jataka, Babbitt, are replaced by a token “<unk>”. More about special tokens later in this chapter. Unnecessary white space are removed, look at the sentence
+“own garden , “ is cleaned up to “own garden,” Let us peek into the vocabulary creaated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocabulary</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../data/simplebooks/simplebooks-2/train.vocab&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">(</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span> <span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">vocabulary</span><span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+        
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Entries in vocabulary </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;sample tokens </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;their encodings </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">vocabulary</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entries in vocabulary 11493
+sample tokens [&#39;,&#39;, &#39;.&#39;, &#39;the&#39;, &#39;&quot;&#39;, &#39;and&#39;]
+their encodings [131695, 105703, 98932, 97156, 63612]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hopefully this gives an idea about input text corpus.</p>
+</section>
+</section>
+<section id="tokenization-pipeline">
+<h2>Tokenization Pipeline<a class="headerlink" href="#tokenization-pipeline" title="Link to this heading">#</a></h2>
+<p>The tokenization begins with raw input text source / corpus and ends with a dictionary of tokens and their associated token ids. Token ids are integers. After this given a new text, the pipeline should be able to spit out the associated tokens. Similarly, given a list of tokens, the pipeline should be able to convert it back to text without any loss. The below figure illustrates the various steps involved in this pipeline.</p>
+<figure class="align-default" id="encoding">
+<span id="reference-tokenization"></span><a class="reference internal image-reference" href="../../_images/TokenEncoding.jpg"><img alt="../../_images/TokenEncoding.jpg" src="../../_images/TokenEncoding.jpg" style="height: 250px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Steps in Tokenization</span><a class="headerlink" href="#encoding" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="normalization">
+<h3>Normalization<a class="headerlink" href="#normalization" title="Link to this heading">#</a></h3>
+<p>In the simplebooks example, we saw that unncessary whitespaces were removed and numbers were formatted by inserting ‘&#64;’ at different separators.
+Typicall normalization involves removing unncessary whitespaces, stripping of accents, lower case conversion and similar others. Here is a list of some normalizer s provided by <a class="reference external" href="https://huggingface.co/docs/tokenizers/en/components">HuggingFace Tokenizer library</a>.</p>
+<ol class="arabic simple">
+<li><p>Unicode normalization (NFD, NFKD, NFC and NFKC algorithms)</p></li>
+<li><p>Lowecase conversion</p></li>
+<li><p>Stripping white spaces and accents</p></li>
+<li><p>Replacing common string patterns</p></li>
+</ol>
+<div class="admonition-unicode-normalization admonition">
+<p class="admonition-title">Unicode normalization</p>
+<p>Unicode encoding involves assigning a numerical value called “code point” to each character and transforming them into a series of bytes.
+Issues may arise when a character can be represented by a single code point or a combination of two code points. Unicode normalization
+is the process of normalizing a unicode encoded string into a canonical form.</p>
+<p>For the more curious please read the <a class="reference external" href="https://www.smashingmagazine.com/2012/06/all-about-unicode-utf8-character-sets/">article</a> to get a little history about ASCII, latin-1, unicode.</p>
+</div>
+<p>Quoting from GPT-1 paper <span id="id5">[<a class="reference internal" href="../../intro.html#id2" title="Alec Radford, Karthik Narasimhan, Tim Salimans, and Ilya Sutskever. Improving language understanding by generative pre-training. 2018.">RNSS18</a>]</span>, “We use the ftfy library2 to clean the raw text in BooksCorpus, standardize some punctuation and whitespace, and use the spaCy tokenizer”.</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://ftfy.readthedocs.io/en/latest/index.html">ftfy - fixes text for you</a></p></li>
+<li><p><a class="reference external" href="https://spacy.io/">Spacy</a></p></li>
+</ol>
+<p>Going into the details of ftfy and spacy is beyond the scope of this book. Following code snippets demonstrates the basic usage of these packages. We will discuss Spacy in pre-tokenization section.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ftfy</span>
+
+<span class="n">ftfy</span><span class="o">.</span><span class="n">fix_text</span><span class="p">(</span><span class="s2">&quot;L&amp;AMP;AMP;ATILDE;&amp;AMP;AMP;SUP3;PEZ&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;LóPEZ&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The string “L&amp;AMP;ATILDE;&amp;AMP;SUP3;PEZ” is converted to LoPEZ by ftfy. This package can take care of issues with character decoding. Let us look
+at a spacy example. After installing spacy, download the tokenizer model to run the following code snipped.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>conda install ftfy spacy
+python -m spacy download en_core_web_sm
+</pre></div>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Mojibake (文字化け, “Garbled”)</p>
+<p>Garbled text formed as a result of being decoded using a character encoding with which it was not orignally encoded.
+A funny poem about Mojibake related to characters printed in a shippling label.</p>
+<p id="reference-mojibake">Figure 2 A funny mojibake poem</p>
+<figure class="align-default" id="shipping-label">
+<a class="reference internal image-reference" href="chapters/images/chapter1/shipping-label.png"><img alt="chapters/images/chapter1/shipping-label.png" src="chapters/images/chapter1/shipping-label.png" style="height: 150px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Mojibake shipping label</span><a class="headerlink" href="#shipping-label" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>ODE TO A SHIPPING LABEL
+Once there was a little o,
+with an accent on top like so</p>
+<p>It started out as UTF8,
+but the program only knew latin1,
+and changed the litte o to A for fun.</p>
+<p>and it goes on. For the complete <a class="reference external" href="https://imgur.com/4J7Il0m">poem</a></p>
+<p>The text in the label is lopez and due to wrong decoding we have a Mojibake.</p>
+</div>
+</section>
+<section id="pre-tokenization">
+<h3>Pre-tokenization<a class="headerlink" href="#pre-tokenization" title="Link to this heading">#</a></h3>
+<p>Using a set of rules, the text is split into atomic units, tokens. Imaging this as a superset of tokens fed into the vocabulary building exercise. A subset of these tokens make their way into the final vocabulary. An example pre-tokenizer is  a simple whitespace tokenizer. If two words are separated by a whitespace, they will be treated as two tokens.
+We saw an example of this in the no frill section. Let us write some python code to implement what we have learnt.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">ftfy</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+
+<span class="k">class</span> <span class="nc">SpacyTokenizer</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tokenizer based on Spacy library</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;en_core_web_sm&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_text</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">input_text</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">]</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">tokens</span>
+        
+
+
+<span class="k">class</span> <span class="nc">RegexTokenizer</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Regex Based Tokenizer</span>
+<span class="sd">    Splits text by eitehr whitespace or by one of these</span>
+<span class="sd">    special characters,?.#$&amp;*^@,</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_text</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="n">input_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+        <span class="n">tokenizer_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;([?.#$&amp;*^@,)(]|\s)&#39;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">tokenizer_regex</span><span class="p">,</span> <span class="n">input_text</span><span class="p">)</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">tokens</span>
+        
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_75303</span><span class="o">/</span><span class="mf">18816868.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">re</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">ftfy</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">spacy</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="k">class</span> <span class="nc">SpacyTokenizer</span><span class="p">():</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;ftfy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The regex based tokenizer, uses the regex expression we introduced in no frills section. Spacy tokenizer uses
+the Spacy library to tokenize. Let us take a sample from our Simplebooks dataset to see these tokenizers in action.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_simplebooks</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">line</span>
+
+<span class="n">simplebooks_reader</span> <span class="o">=</span> <span class="n">read_simplebooks</span><span class="p">(</span><span class="s1">&#39;../data/simplebooks/simplebooks-2-raw/train.txt&#39;</span><span class="p">)</span>
+<span class="n">SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span>
+
+
+<span class="n">simple_books_sample</span> <span class="o">=</span> <span class="p">[</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">simplebooks_reader</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span> <span class="o">&lt;=</span> <span class="n">SAMPLE_SIZE</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">simple_books_sample</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">ipykernel_75303</span><span class="o">/</span><span class="mf">3361626792.</span><span class="n">py</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">SAMPLE_SIZE</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">RegexTokenizer</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+<span class="g g-Whitespace">     </span><span class="mi">10</span> 
+
+<span class="ne">NameError</span>: name &#39;RegexTokenizer&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
+<p>With a sample of 15 sentences we are ready to pass it to our tokenizer.</p>
+</section>
+<section id="tokenizer-models-dictionary-training">
+<h3>Tokenizer models - Dictionary Training<a class="headerlink" href="#tokenizer-models-dictionary-training" title="Link to this heading">#</a></h3>
+<p>One may wonder the need for any subsequent processing in tokenization pipeline. The pre-tokenization output can be used directly to build a Vocabulary. The set of unique tokens gathered after running the tokenizer over the input corpus is the vocabulary. The transformerXL model <span id="id6">[<a class="reference internal" href="../../intro.html#id8" title="Zihang Dai, Zhilin Yang, Yiming Yang, Jaime Carbonell, Quoc V. Le, and Ruslan Salakhutdinov. Transformer-xl: attentive language models beyond a fixed-length context. 2019. arXiv:1901.02860.">DYY+19</a>]</span> has a vocabulary size of 250K, compared to Llama which has a size of 32K</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>TransformerXL uses space and punctuation to tokenize the text. Their vocabulary size is around 250K. Here is the link
+to their paper <a class="reference external" href="https://arxiv.org/abs/1901.02860">Transformer-XL: Attentive Language Models Beyond a Fixed-Length Context</a></p>
+</div>
+<p>A compact vocabulary reduces the model complexity and computation needs to train and perform inference. Special tokens and respective token-ids are added for unknown words. Say an input to the language model contains a word not present in the vocabulary, it will be treatd as unknown and the token id assigned for unknown word will be substituted. A good token encoding pipeline should strive to reduce the number of unknown words. Compact vocabulary and reduced unkown words are two opposite contraints.</p>
+<p>Word based tokenization suffers from very large vocabulary size and large number of out of vocabulary tokens.
+Character based tokenization suffers from very large sequences and less meaningful individual tokens.</p>
+<p>The pre-tokenization leaves us with a superset of all the tokens. The Dictionary training phase involves applying an algorithm to finalize the subset of tokens from this superset to be used for encoding.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The tokenizer which uses recursive rules to produce vocabulary are commonly called as sub-word tokenizers.</p>
+</div>
+<p>Dont get it confused by machine learning tranining process. By train, this method is suppose to use a bunch of rules to produce an optimum dictionary.
+Using rules, the tokens are further split to form a compact vocabulary, at the same time reduce the chances of having unknown token ids.</p>
+<p>The most commonly used dictionary training approaches are</p>
+<ol class="arabic simple">
+<li><p>BPE - Byte Pair Encoding</p></li>
+<li><p>WordPiece</p></li>
+<li><p>SentencePiece</p></li>
+<li><p>Unigram</p></li>
+</ol>
+<div class="admonition-character-level-encoding admonition">
+<p class="admonition-title">Character Level Encoding</p>
+<p>The two biggest challenge with word-level tokenization and are the size of the vocabulary and the number of unknown tokens added as a part of encoding.
+The vocabulary size has to be very large to decrease the number of uknown token, however it does not guarantee great reduction of unknown tokens. Words are based on characters, how about we tokenize the individual characters and use an encoding for each character?</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>input_corpus_encoded = [ord(character) for character in text_corpus]
+print(input_corpus_encoded)
+assert len(text_corpus) == len(input_corpus_encoded)
+
+[76, 97, 114, 103, 101, 32, 108, 97, 110, 103, 117, 97, 103, 101, 32, 109, 111, 100, 101, 108, 115, 44, 32, 116, 104, 101, 32, 110, 101, 119, 32, 107, 105, 100, 32, 105, 110, 32, 116, 104, 101, 32, 98, 108, 111, 99, 107, 32, 105, 115, 32, 99, 114, 101, 97, 116, 105, 110, 103, 32, 119, 111, 110, 100, 101, 114, 115, 46, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 78, 117, 109, 101, 114, 111, 117, 115, 32, 97, 112, 112, 108, 105, 99, 97, 116, 105, 111, 110, 115, 32, 104, 97, 118, 101, 32, 115, 112, 97, 110, 110, 101, 100, 32, 105, 110, 32, 116, 104, 101, 32, 108, 97, 115, 116, 32, 116, 119, 111, 32, 121, 101, 97, 114, 115, 32, 108, 101, 118, 97, 114, 97, 103, 105, 110, 103, 32, 108, 108, 109, 115, 46]
+
+decoded_input = [chr(token_id) for token_id in input_corpus_encoded]
+print(&quot;&quot;.join(decoded_input))
+
+Large language models, the new kid in the block is creating wonders.                 Numerous applications have spanned in the last two years levaraging llms.
+</pre></div>
+</div>
+<p><strong>Challenges with character level encoding</strong></p>
+<p>The context of thw words are lost while doing character level encoding. They may be suitable for small toy llm’s for unusable for building systems of any practical use.</p>
+</div>
+<p>In this book we will cover Byte pair encoding. Curious readers can go through <a class="reference external" href="https://huggingface.co/docs/transformers/en/tokenizer_summary">https://huggingface.co/docs/transformers/en/tokenizer_summary</a> to get a summary of other subword algorithms.</p>
+<section id="bye-pair-encoding">
+<h4>Bye pair encoding<a class="headerlink" href="#bye-pair-encoding" title="Link to this heading">#</a></h4>
+<p>Byte pair encoding was first introduced for word segmentation in the paper Neural Machine Translation of Rare Words with Subword Units <span id="id7">[<a class="reference internal" href="../../intro.html#id9" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>. It is a sub-word level method. The original algorithm is attribtued to Philip Gage. 1994. A New Algorithm for Data Com-pression. C Users J., 12(2):23–38, February. It is a data compression algorithm working iteratively. Say for example, we have the following string</p>
+<p>aaaabdaaabac</p>
+<p>Iteratively, let us now replace the most frequent pairs with another symbol not present in the string. For example, we replace the pair ‘aa’ with Z. The new
+string will be ZabdZabac. ‘Za’ is the most frequently occuring pair now. Let us replace it with X. We continue this way till the string reaches the desired size.
+Below is the python code to demonstrate this iteration.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">bpe_compression</span><span class="p">(</span><span class="n">input_str</span><span class="p">,</span> <span class="n">desired_size</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">iterations</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">replace</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">,</span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="s1">&#39;Y&#39;</span><span class="p">,</span><span class="s1">&#39;L&#39;</span><span class="p">]</span>
+    <span class="n">replacements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">input_str</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">desired_size</span><span class="p">:</span>
+        <span class="n">iterations</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="n">pairs</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">([</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">input_str</span><span class="p">,</span> <span class="n">input_str</span><span class="p">[</span><span class="mi">1</span><span class="p">:])])</span>
+        <span class="n">pair</span><span class="p">,</span><span class="n">freq</span> <span class="o">=</span> <span class="n">pairs</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">freq</span> <span class="o">&lt;=</span><span class="mi">1</span> <span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">old_str</span> <span class="o">=</span> <span class="n">input_str</span>
+        <span class="n">input_str</span> <span class="o">=</span> <span class="n">input_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pair</span><span class="p">,</span> <span class="n">replace</span><span class="p">[</span><span class="n">iterations</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">replacements</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">replace</span><span class="p">[</span><span class="n">iterations</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">pair</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Iteration </span><span class="si">{</span><span class="n">iterations</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> old </span><span class="si">{</span><span class="n">old_str</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> new </span><span class="si">{</span><span class="n">input_str</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">pair</span><span class="si">}</span><span class="s2"> replaced by </span><span class="si">{</span><span class="n">replace</span><span class="p">[</span><span class="n">iterations</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">input_str</span><span class="p">,</span> <span class="n">replacements</span>
+
+<span class="n">input_str</span><span class="p">,</span> <span class="n">replacements</span> <span class="o">=</span> <span class="n">bpe_compression</span><span class="p">(</span><span class="s1">&#39;aaabdaaabac&#39;</span><span class="p">)</span>
+        
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Iteration 1 
+ old aaabdaaabac 
+ new ZabdZabac 
+ aa replaced by Z
+Iteration 2 
+ old ZabdZabac 
+ new XbdXbac 
+ Za replaced by X
+Iteration 3 
+ old XbdXbac 
+ new YdYac 
+ Xb replaced by Y
+</pre></div>
+</div>
+</div>
+</div>
+<p>In order to reconstruct this, we store all the replacements in a stack.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(&#39;Z&#39;, &#39;aa&#39;), (&#39;X&#39;, &#39;Za&#39;), (&#39;Y&#39;, &#39;Xb&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Now we can pop up the replacements from the stack and retrieve the original string.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">replacements</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">replace_str</span><span class="p">,</span> <span class="n">_str</span> <span class="o">=</span> <span class="n">replacements</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">replace_str</span><span class="p">,</span> <span class="n">_str</span><span class="p">)</span>
+    <span class="n">input_str</span> <span class="o">=</span> <span class="n">input_str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">replace_str</span><span class="p">,</span> <span class="n">_str</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">input_str</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>BPE begins with the output from pre-tokenizer. For each token, a map of token with its constituent characters followed by a end of word symbol and its frequency in the input corpus are retrieved.</p>
+<p>Let us see the example from <span id="id8">[<a class="reference internal" href="../../intro.html#id9" title="Rico Sennrich, Barry Haddow, and Alexandra Birch. Neural machine translation of rare words with subword units. 2016. arXiv:1508.07909.">SHB16</a>]</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span>  <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>So given a token ‘l o w </w>’, we get the list of subsequent character pairs and their frequency. In this case it will be</p>
+<p>‘l o’, ‘o w’ and ‘w </w>’. Since ‘l o’ occurs in ‘l o w’ and ‘l o w e r’,its frequency will be 7.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="k">def</span> <span class="nf">get_freq_pairs</span><span class="p">():</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">token</span><span class="p">,</span><span class="n">frequency</span> <span class="ow">in</span> <span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">symbols</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">symbols</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">pair</span> <span class="o">=</span> <span class="p">(</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">symbols</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">pairs</span><span class="p">[</span><span class="n">pair</span><span class="p">]</span><span class="o">+=</span><span class="n">frequency</span>
+    <span class="k">return</span> <span class="n">pairs</span>
+
+<span class="n">pairs</span> <span class="o">=</span> <span class="n">get_freq_pairs</span><span class="p">()</span>
+<span class="n">pairs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defaultdict(int,
+            {(&#39;l&#39;, &#39;o&#39;): 7,
+             (&#39;o&#39;, &#39;w&#39;): 7,
+             (&#39;w&#39;, &#39;&lt;/w&gt;&#39;): 5,
+             (&#39;w&#39;, &#39;e&#39;): 8,
+             (&#39;e&#39;, &#39;r&#39;): 2,
+             (&#39;r&#39;, &#39;&lt;/w&gt;&#39;): 2,
+             (&#39;n&#39;, &#39;e&#39;): 6,
+             (&#39;e&#39;, &#39;w&#39;): 6,
+             (&#39;e&#39;, &#39;s&#39;): 9,
+             (&#39;s&#39;, &#39;t&#39;): 9,
+             (&#39;t&#39;, &#39;&lt;/w&gt;&#39;): 9,
+             (&#39;w&#39;, &#39;i&#39;): 3,
+             (&#39;i&#39;, &#39;d&#39;): 3,
+             (&#39;d&#39;, &#39;e&#39;): 3})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pairs</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+<span class="n">best</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+
+<span class="n">best</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;e s&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>In this iteration we have selected ‘es’ as the best pair. Now let us rebuild our vocabulary with this newly found frequencies. This is the merge operation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">vocab_in</span><span class="p">):</span>
+    <span class="n">new_vocab</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">token</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">vocab_in</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">best</span> <span class="ow">in</span> <span class="n">token</span><span class="p">:</span>
+            <span class="n">best_concated</span> <span class="o">=</span> <span class="n">best</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">best_concated</span><span class="p">)</span>
+        <span class="n">new_vocab</span><span class="p">[</span><span class="n">token</span><span class="p">]</span> <span class="o">=</span> <span class="n">freq</span>
+
+    <span class="k">return</span> <span class="n">new_vocab</span>
+
+<span class="n">vocab</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defaultdict(&lt;class &#39;int&#39;&gt;, {&#39;l o w &lt;/w&gt;&#39;: 5, &#39;l o w e r &lt;/w&gt;&#39;: 2, &#39;n e w es t &lt;/w&gt;&#39;: 6, &#39;w i d es t &lt;/w&gt;&#39;: 3})
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see from the above output, ‘e’ and ‘s’ are now merged as ‘es’. We have the output from the first iteration. Similary we can run multiple iteration. In the below example, we run the iterations 5 times. Every time we get the most frequent pair, find the best pair, the one with highest frequency, perform the merge oepration and simulataneously store the merges as rules.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab</span>  <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;l o w &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span> <span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;n e w e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;w i d e s t &lt;/w&gt;&#39;</span><span class="p">:</span><span class="mi">3</span><span class="p">}</span>
+<span class="n">rules</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">rule_number</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">get_freq_pairs</span><span class="p">()</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">pairs</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
+    <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">rule_number</span><span class="p">,</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best</span><span class="p">),</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best</span><span class="p">)))</span>
+    <span class="n">rule_number</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+    <span class="n">vocab</span> <span class="o">=</span> <span class="n">merge</span><span class="p">(</span><span class="n">best</span><span class="p">,</span> <span class="n">vocab</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">vocab</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rules</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>defaultdict(&lt;class &#39;int&#39;&gt;, {&#39;low &lt;/w&gt;&#39;: 5, &#39;low e r &lt;/w&gt;&#39;: 2, &#39;n e w est&lt;/w&gt;&#39;: 6, &#39;w i d est&lt;/w&gt;&#39;: 3})
+[(1, &#39;e s&#39;, &#39;es&#39;), (2, &#39;es t&#39;, &#39;est&#39;), (3, &#39;est &lt;/w&gt;&#39;, &#39;est&lt;/w&gt;&#39;), (4, &#39;l o&#39;, &#39;lo&#39;), (5, &#39;lo w&#39;, &#39;low&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>With the updated frequency and rules to merge, we can finally create our subword dictionary.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">token_id</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">final_vocab</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">token</span><span class="p">,</span><span class="n">freq</span> <span class="ow">in</span> <span class="n">vocab</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">symbols</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">symbol</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">token_id</span><span class="o">+=</span><span class="mi">1</span>
+            <span class="n">final_vocab</span><span class="p">[</span><span class="n">symbol</span><span class="p">]</span> <span class="o">=</span> <span class="n">token_id</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">final_vocab</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;low&#39;: 1, &#39;&lt;/w&gt;&#39;: 2, &#39;e&#39;: 3, &#39;r&#39;: 4, &#39;n&#39;: 5, &#39;w&#39;: 6, &#39;est&lt;/w&gt;&#39;: 7, &#39;i&#39;: 8, &#39;d&#39;: 9}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our final vocabulary is ready. You can compare it with our pre-tokenization frequence table. We had words like lower, lowest in our pre-tokenization dictionary. We now have a compact subword vocabulary. Let us try to use this vocabulary and our merge rules to tokenize a given text.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encode_token</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+        <span class="n">r_no</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rule no </span><span class="si">{</span><span class="n">r_no</span><span class="si">}</span><span class="s2"> pattern </span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2"> replacement </span><span class="si">{</span><span class="n">replacement</span><span class="si">}</span><span class="s2"> result </span><span class="si">{</span><span class="n">test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">encoded</span> <span class="o">=</span> <span class="p">[</span><span class="n">final_vocab</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+
+<span class="n">test</span> <span class="o">=</span> <span class="s1">&#39;l o w e r &lt;/w&gt;&#39;</span>
+<span class="n">encode_token</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rule no 1 pattern e s replacement es result l o w e r &lt;/w&gt;
+Rule no 2 pattern es t replacement est result l o w e r &lt;/w&gt;
+Rule no 3 pattern est &lt;/w&gt; replacement est&lt;/w&gt; result l o w e r &lt;/w&gt;
+Rule no 4 pattern l o replacement lo result lo w e r &lt;/w&gt;
+Rule no 5 pattern lo w replacement low result low e r &lt;/w&gt;
+[1, 3, 4, 2]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Rule No 1,2 and 3 does not apply to our example. Rule number 4, where characters l and o are replaced by lo. Further according to Rule no 5, lo and w are further merged as low. Finally we perform a lookup for low, e and r in our vocabulary and encode this text. A single world lower in this case is encoded into four integer tokens. Let us see another example.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">=</span> <span class="s1">&#39;l o w e s t &lt;/w&gt;&#39;</span>
+<span class="n">encode_token</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rule no 1 pattern e s replacement es result l o w es t &lt;/w&gt;
+Rule no 2 pattern es t replacement est result l o w est &lt;/w&gt;
+Rule no 3 pattern est &lt;/w&gt; replacement est&lt;/w&gt; result l o w est&lt;/w&gt;
+Rule no 4 pattern l o replacement lo result lo w est&lt;/w&gt;
+Rule no 5 pattern lo w replacement low result low est&lt;/w&gt;
+[1, 7]
+</pre></div>
+</div>
+</div>
+</div>
+<p>We see the word lowest is encoded as 2 tokens. An implementation of byte-pair encoding is available in <a class="github reference external" href="https://github.com/openai/tiktoken">openai/tiktoken</a>. This was released by OpenAI.</p>
+<p>Google has released SentencePiece,<a class="github reference external" href="https://github.com/google/sentencepiece">google/sentencepiece</a>. A tokenizer which uses both byte-pair and Unigram algorithms. During pre-tokenization we typcially tend to use whitespace to split the raw text. But there are languagtes where the words can’t be split by whitespace. SentencePiece claims to be handy in those cases. It is a langauage agnostic subword tokenization algorithm.</p>
+</section>
+</section>
+<section id="post-processing">
+<h3>Post Processing<a class="headerlink" href="#post-processing" title="Link to this heading">#</a></h3>
+<p>Let us look a simple example to illustrate the need for post-processing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test</span> <span class="o">=</span> <span class="s2">&quot;speed&quot;</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">encode_token</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Given word not available in the dictionary&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rule no 1 pattern e s replacement es result speed
+Rule no 2 pattern es t replacement est result speed
+Rule no 3 pattern est &lt;/w&gt; replacement est&lt;/w&gt; result speed
+Rule no 4 pattern l o replacement lo result speed
+Rule no 5 pattern lo w replacement low result speed
+Given word not available in the dictionary
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is an example where the encoding failed, as the encoding algorithm didnt know how to split this word into subwords. During training the dictionary we did not encounter this word. In these cases, a special token is added to the vocabulary. Let us rewrite our encode function to handle this case.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">final_vocab</span><span class="p">[</span><span class="s1">&#39;UNKN&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">999</span>
+
+<span class="k">def</span> <span class="nf">encode_token_v1</span><span class="p">(</span><span class="n">test</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+        <span class="n">r_no</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">replacement</span> <span class="o">=</span> <span class="n">rule</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rule no </span><span class="si">{</span><span class="n">r_no</span><span class="si">}</span><span class="s2"> pattern </span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2"> replacement </span><span class="si">{</span><span class="n">replacement</span><span class="si">}</span><span class="s2"> result </span><span class="si">{</span><span class="n">test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">encoded</span> <span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">test</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">item</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">final_vocab</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_vocab</span><span class="p">[</span><span class="s1">&#39;UNKN&#39;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">encoded</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">final_vocab</span><span class="p">[</span><span class="n">item</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">encoded</span><span class="p">)</span>
+    
+<span class="n">encode_token_v1</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Rule no 1 pattern e s replacement es result speed
+Rule no 2 pattern es t replacement est result speed
+Rule no 3 pattern est &lt;/w&gt; replacement est&lt;/w&gt; result speed
+Rule no 4 pattern l o replacement lo result speed
+Rule no 5 pattern lo w replacement low result speed
+[999]
+</pre></div>
+</div>
+</div>
+</div>
+<p>In the above example we used a special token <strong><UNKN></strong> to handle words which are not in the vocabulary. Some of the additional special tokens include</p>
+<ol class="arabic simple">
+<li><p><BOS>, beginning of a sequence, a token to symbolize beginning of a text. This will help LLM understand where the text content begins.</p></li>
+<li><p><EOS>, end of sequence, a token to symbolize where the text begins.</p></li>
+</ol>
+<p>LLMs are trained using multiple corpuses. These tokens helps them idenify when a token begins and when it ends</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While choosing the tokenizer algorithm a key requirment is that no information should be lost during encoding tokens to token-ids.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="huggingface-libraries">
+<h2>HuggingFace Libraries<a class="headerlink" href="#huggingface-libraries" title="Link to this heading">#</a></h2>
+<p>Now that we understand the data preparation pipeline, let us introduce the readers to HuggingFace ecosystem and how we can leverage it for building input data pipelines to train LLMs.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">parent_path</span>  <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+
+
+<span class="n">destination</span> <span class="o">=</span> <span class="n">parent_path</span> <span class="o">+</span> <span class="s1">&#39;/data/simplebooks/simplebooks-2-raw/&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">download_simplebooks</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download simple books dataset</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        destination: download folder string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://dldata-public.s3.us-east-2.amazonaws.com/simplebooks.zip&quot;</span>
+    <span class="n">http_response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">zipfile</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">http_response</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">zipfile</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;destination&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished downloading and extracting simplebooks.zip&quot;</span><span class="p">)</span>
+
+
+
+<span class="k">def</span> <span class="nf">load_simple_books</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+    
+    <span class="n">train</span>        <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">test</span>         <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">validation</span>   <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> 
+    
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="n">test</span><span class="p">,</span> <span class="s2">&quot;validation&quot;</span><span class="p">:</span> <span class="n">validation</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Function download_simplebooks downloads the raw input and stores it in the destination folder. The following function load_simple_books uses load_dataset function from datasets library to load this data into memory.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">load_simple_books</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">values</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> rows: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>train rows: 114696
+test rows: 14830
+validation rows: 13384
+</pre></div>
+</div>
+</div>
+</div>
+<p>As you can see our raw data is now stored as dictionary in memory. Let us now use AutoTokenizer class from Huggingface transformers libary to load subword tokenization algorithm employed by GPT2 model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="n">gpt2_tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span>
+                                               <span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s1">&#39;max_length&#39;</span>
+                                               <span class="p">,</span><span class="n">truncation</span><span class="o">=</span><span class="s2">&quot;only_second&quot;</span>
+                                               <span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span>
+                                               <span class="p">,</span><span class="n">padding_side</span> <span class="o">=</span><span class="s2">&quot;left&quot;</span>
+                                               <span class="p">,</span><span class="n">bos_token</span><span class="o">=</span><span class="s2">&quot;&lt;BOS&gt;&quot;</span>
+                                               <span class="p">,</span><span class="n">eos_token</span><span class="o">=</span><span class="s2">&quot;&lt;EOS&gt;&quot;</span>
+                                               <span class="p">,</span><span class="n">pad_token</span><span class="o">=</span><span class="s2">&quot;&lt;PAD&quot;</span>
+                                              <span class="p">)</span>
+<span class="n">encode_input</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="mi">10</span><span class="p">:</span><span class="mi">15</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="s2">&quot;&lt;BOS&gt; &quot;</span> <span class="o">+</span> <span class="n">sample</span> <span class="o">+</span> <span class="s2">&quot; &lt;EOS&gt;&quot;</span>
+        <span class="n">encode_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">encode_input</span><span class="p">)</span>
+
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">gpt2_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">encode_input</span><span class="p">)</span>
+<span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;&lt;BOS&gt; The Girl Monkey And The String Of Pearls &lt;EOS&gt;&#39;, &#39;&lt;BOS&gt; One day the king went for a long walk in the woods. When he came back to his own garden, he sent for his family to come down to the lake for a swim. &lt;EOS&gt;&#39;]
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;&lt;BOS&gt;&#39;,
+ &#39;ĠThe&#39;,
+ &#39;ĠGirl&#39;,
+ &#39;ĠMonkey&#39;,
+ &#39;ĠAnd&#39;,
+ &#39;ĠThe&#39;,
+ &#39;ĠString&#39;,
+ &#39;ĠOf&#39;,
+ &#39;ĠPear&#39;,
+ &#39;ls&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gpt2_tokenizer</span><span class="p">(</span><span class="n">encode_input</span> <span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s1">&#39;max_length&#39;</span>
+                                               <span class="p">,</span><span class="n">truncation</span><span class="o">=</span><span class="kc">True</span>
+                                               <span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">10</span>
+                                               <span class="p">,</span><span class="n">return_attention_mask</span><span class="o">=</span><span class="kc">True</span>
+              <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input_ids&#39;: [[50259, 464, 7430, 26997, 843, 383, 10903, 3226, 11830, 7278], [3198, 1110, 262, 5822, 1816, 329, 257, 890, 2513, 287]], &#39;attention_mask&#39;: [[0, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]}
+</pre></div>
+</div>
+</div>
+</div>
+<section id="train-a-custom-dictionary">
+<h3>Train a custom dictionary<a class="headerlink" href="#train-a-custom-dictionary" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">data_generator</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataset</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">row</span>
+
+        
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">data_generator</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">])))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">data_generator</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">])))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>More Jataka Tales
+The Story Of A Lamb On Wheels
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">52000</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">data_generator</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">])</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">old_tokenizer</span><span class="o">.</span><span class="n">train_new_from_iterator</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">&quot;../data/simplebooks-tokenizer&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(&#39;../data/simplebooks-tokenizer/tokenizer_config.json&#39;,
+ &#39;../data/simplebooks-tokenizer/special_tokens_map.json&#39;,
+ &#39;../data/simplebooks-tokenizer/vocab.json&#39;,
+ &#39;../data/simplebooks-tokenizer/merges.txt&#39;,
+ &#39;../data/simplebooks-tokenizer/added_tokens.json&#39;,
+ &#39;../data/simplebooks-tokenizer/tokenizer.json&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simplebooks_tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;../data/simplebooks-tokenizer&quot;</span><span class="p">)</span>
+<span class="n">simplebooks_tokenizer</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;More&#39;, &#39;ĠJataka&#39;, &#39;ĠTales&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simplebooks_tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[6483, 28923, 10076]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simplebooks_tokenizer</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;input_ids&#39;: [6483, 28923, 10076], &#39;attention_mask&#39;: [1, 1, 1]}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="simple-books-pytorch-dataset">
+<h3>Simple Books Pytorch Dataset<a class="headerlink" href="#simple-books-pytorch-dataset" title="Link to this heading">#</a></h3>
+<p>Let us put together what we have learned till now.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">load_dataset</span>
+
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">current_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">())</span>
+<span class="n">parent_path</span>  <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">absolute</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">get_tokenizer</span><span class="p">():</span>
+    
+    <span class="n">tokenizer_path</span> <span class="o">=</span> <span class="n">parent_path</span> <span class="o">+</span> <span class="s2">&quot;/data/simplebooks-tokenizer&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading tokenizer from </span><span class="si">{</span><span class="n">tokenizer_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">simplebooks_tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">tokenizer_path</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">simplebooks_tokenizer</span>
+
+
+<span class="k">def</span> <span class="nf">download_simplebooks</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Download simple books dataset</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        destination: download folder string</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://dldata-public.s3.us-east-2.amazonaws.com/simplebooks.zip&quot;</span>
+    <span class="n">http_response</span> <span class="o">=</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="n">zipfile</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">http_response</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">zipfile</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="s2">&quot;destination&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Finished downloading and extracting simplebooks.zip&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">load_simple_books</span><span class="p">(</span><span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_dataset</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+    
+    <span class="n">train</span>        <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">test</span>         <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span>
+    <span class="n">validation</span>   <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span> 
+    
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;train&quot;</span><span class="p">:</span> <span class="n">train</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">:</span> <span class="n">test</span><span class="p">,</span> <span class="s2">&quot;validation&quot;</span><span class="p">:</span> <span class="n">validation</span><span class="p">}</span>
+                                         
+
+
+
+<span class="k">class</span> <span class="nc">SimpleBooksDataSet</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">corpus</span><span class="p">,</span> <span class="n">max_length</span><span class="p">,</span> <span class="n">stride</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">parent_path</span> <span class="o">+</span> <span class="s2">&quot;/data/simplebooks-tokenizer&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span>  <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span>  <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span>  <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="n">corpus</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">))</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total </span><span class="si">{</span><span class="n">context</span><span class="si">}</span><span class="s2"> tokens </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span><span class="p">)</span> <span class="o">-</span> <span class="n">max_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span><span class="n">stride</span><span class="p">):</span>
+            <span class="n">input_chunk</span> <span class="o">=</span>  <span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="n">max_length</span><span class="p">]</span>
+            <span class="n">target_chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">token_ids</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">input_chunk</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">target_chunk</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_ids</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_ids</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+
+    
+<span class="k">def</span> <span class="nf">stack_collate</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">features</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+    
+<span class="k">def</span> <span class="nf">get_dataloaders</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    
+    <span class="n">destination</span> <span class="o">=</span> <span class="n">parent_path</span> <span class="o">+</span> <span class="s1">&#39;/data/simplebooks/simplebooks-2-raw/&#39;</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loading dataset from </span><span class="si">{</span><span class="n">destination</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    
+    <span class="n">dataset</span>     <span class="o">=</span> <span class="n">load_simple_books</span><span class="p">(</span><span class="n">destination</span><span class="p">)</span>
+    
+    <span class="n">training_corpus</span>   <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span>
+    <span class="n">validation_corpus</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;validation&#39;</span><span class="p">]</span>
+
+    
+    <span class="n">train_ds</span>      <span class="o">=</span> <span class="n">SimpleBooksDataSet</span><span class="p">(</span><span class="n">training_corpus</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>            
+    <span class="n">validation_ds</span> <span class="o">=</span> <span class="n">SimpleBooksDataSet</span><span class="p">(</span><span class="n">validation_corpus</span><span class="p">,</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s1">&#39;validation&#39;</span><span class="p">)</span>  
+
+
+    <span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">train_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">stack_collate</span><span class="p">,</span>
+                                  <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">)</span>
+
+    <span class="n">validation_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">validation_ds</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">stack_collate</span><span class="p">,</span>
+                                  <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">drop_last</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">num_workers</span><span class="o">=</span><span class="n">num_workers</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">train_dataloader</span><span class="p">,</span> <span class="n">validation_dataloader</span>
+
+                             
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataloader</span><span class="p">,</span> <span class="n">validation_dataloder</span> <span class="o">=</span> <span class="n">get_dataloaders</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">num_workers</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="ow">in</span> <span class="n">train_dataloader</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading dataset from /home/gopi/Documents/small_llm/llmbook/data/simplebooks/simplebooks-2-raw/
+Total train tokens 1676477
+Total validation tokens 189785
+tensor([[  653,  1055,    12,  2165,  3359,    12,   581,    26,     2,  1640,
+           372,   434,   925,  2502,    31,  2577,   372,   434,   925,  2502,
+            31,   295,   448,   585,   392,   260,   925,   381,  1594,    14,
+          1098,  2012,   271,   260,  8612,   536,   260,   666,   396,  2978,
+            14,   935,   357,    12,   351,   341,   552,  2978,    12,   410],
+        [ 1633,   271,   421,  3481,   589,    12,   270,   351,   404,   348,
+            12,   921,   344,   259,  1392,    12,  1121,   283,   341,  1370,
+           260,  1539,    14,  3481, 10928,   432,  3149,   341,   624,   822,
+           303,   260,   922,    14,   590,   469,  2388,   466,  1156,  3618,
+           351,   433,    12,   270,   559,   561,   922,   618,   270,   594]])
+tensor([[ 1055,    12,  2165,  3359,    12,   581,    26,     2,  1640,   372,
+           434,   925,  2502,    31,  2577,   372,   434,   925,  2502,    31,
+           295,   448,   585,   392,   260,   925,   381,  1594,    14,  1098,
+          2012,   271,   260,  8612,   536,   260,   666,   396,  2978,    14,
+           935,   357,    12,   351,   341,   552,  2978,    12,   410,   260],
+        [  271,   421,  3481,   589,    12,   270,   351,   404,   348,    12,
+           921,   344,   259,  1392,    12,  1121,   283,   341,  1370,   260,
+          1539,    14,  3481, 10928,   432,  3149,   341,   624,   822,   303,
+           260,   922,    14,   590,   469,  2388,   466,  1156,  3618,   351,
+           433,    12,   270,   559,   561,   922,   618,   270,   594,  6557]])
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="word-embedding">
+<h2>Word embedding<a class="headerlink" href="#word-embedding" title="Link to this heading">#</a></h2>
+<p>Words are represented in a continous space. The idea is in this new vector space, the words semantically close to each other should be also close in vector space and we should be able to use standard distance functions, like euclidean and cosine to find the similarity between words.embedding. It is easy to imagine a 2 dimensional space. In this 2d space, each word is represented by a co-ordinate.</p>
+<p>Look at the following figure</p>
+<p>Figure 3 Word Embedding.</p>
+<figure class="align-default" id="id9">
+<span id="reference-word-embedding"></span><a class="reference internal image-reference" href="../../_images/word_embedding.drawio.png"><img alt="../../_images/word_embedding.drawio.png" src="../../_images/word_embedding.drawio.png" style="height: 250px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Word Embedding example</span><a class="headerlink" href="#id9" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In the figure, word King and Man are represented in a 2D continous space. With this represenation, we can now compare these two words. Words semantically close to each other should be close to each other in this 2D vector space. For illustration purpose we had kept the vector dimension to 2. In LLMs these are much larger than 2. GPT uses 12288 dimension embeddings.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+
+
+<span class="n">encoded_input</span><span class="p">,</span> <span class="n">encoded_taret</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">train_dataloader</span><span class="p">))</span>
+<span class="n">embedding_dim</span>  <span class="o">=</span> <span class="mi">32</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">52000</span>
+
+<span class="n">wte</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+
+<span class="n">embedded_input</span> <span class="o">=</span> <span class="n">wte</span><span class="p">(</span><span class="n">encoded_input</span><span class="p">)</span>
+<span class="c1"># (batch_size, context_window, embedding_dimension)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">embedded_input</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">embedded_input</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([2, 50, 32])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[-2.1568e-01,  1.9251e-01,  1.6439e-01,  ...,  8.1474e-01,
+           2.1049e+00, -9.9629e-01],
+         [-2.4471e-01, -2.6456e-01, -8.3230e-01,  ...,  5.6894e-01,
+           1.2458e-01, -6.7888e-02],
+         [ 1.3079e+00, -2.0478e+00,  2.9307e+00,  ...,  2.2039e-01,
+          -9.5471e-01, -7.1041e-01],
+         ...,
+         [ 1.4433e+00,  9.8329e-01, -1.4033e-01,  ...,  2.0992e-02,
+          -2.5070e-01, -1.9180e-01],
+         [ 2.3441e-01, -1.5142e+00, -1.3133e-01,  ...,  1.2781e+00,
+           1.3794e+00, -1.2916e-01],
+         [ 4.1121e-04, -3.6518e-01,  1.5661e+00,  ...,  2.3526e+00,
+           5.3088e-01, -6.4193e-01]],
+
+        [[-6.3845e-02,  8.5167e-01,  1.4399e-01,  ...,  4.2325e-01,
+           4.8302e-01,  1.4194e+00],
+         [ 1.5958e+00, -1.0533e+00,  5.0496e-01,  ..., -2.6729e-01,
+           6.8486e-01,  2.4605e+00],
+         [-9.4344e-01, -4.9438e-01, -1.1369e+00,  ..., -8.5355e-01,
+          -8.4444e-01,  1.6266e+00],
+         ...,
+         [ 2.0965e-01, -4.5694e-01,  1.0964e+00,  ..., -7.0590e-01,
+          -1.0948e+00,  1.0518e+00],
+         [-9.4344e-01, -4.9438e-01, -1.1369e+00,  ..., -8.5355e-01,
+          -8.4444e-01,  1.6266e+00],
+         [-5.9748e-01, -8.2814e-02,  5.2005e-01,  ..., -2.1455e+00,
+          -6.2619e-02, -5.2003e-01]]], grad_fn=&lt;EmbeddingBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>nn.Embedding from pytroch is a trainable lookup table. We intialized it using the size of our vocabulary and expected dimension for embedding. Each word in our vocabulary is a row in this lookup. When we pass the token ids to this lookup we get the embedding vector for that token id. Each token is now a 32 dimension vector.</p>
+<p>Initially these embeddings are random. As the model trains, the word embeddings are learned. It is a design choice to load a pre-learned embedding and either keep them outside the model learning. During the learning process, distribution semantics of the words are leveraged to place semantically similar words close to each other in the new embedding vector space. According to distributional semantics, words with similar meanings are more likely to occur in similar context. When a large corpus is used for training, we hope to provide visibility to such contexts to our model.</p>
+</section>
+<section id="position-embedding">
+<h2>Position Embedding<a class="headerlink" href="#position-embedding" title="Link to this heading">#</a></h2>
+<p>“A women is nothing without her man”
+“A man is nothing without her women”</p>
+<p>These two sentences share the same words. They will hence share the same embeddings. For neural network both the sentences mean the same. But we know they convey a different meaning. The model needs to be aware of the position of the tokens in the input. This is where position embedding comes to play.</p>
+<p>A simple solution is to have a embedding dictionary similar to word embedding. A dictionary with an entry for each position.</p>
+<div class="highlight-note notranslate"><div class="highlight"><pre><span></span>context window defines the maximum size of the input an LLM can ingest, the maximum number of tokens it can ingest for it to generate a response. 
+</pre></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">context_window</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">embedding_dim</span> <span class="o">=</span> <span class="mi">32</span>
+
+<span class="n">pe</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span><span class="n">context_window</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">)</span>
+
+<span class="n">input_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">encoded_input</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="n">encoded_input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch size </span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2"> context_window </span><span class="si">{</span><span class="n">input_length</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">input_length</span><span class="p">))</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">positions</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Batch size 2 context_window 50
+torch.Size([2, 50])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+         18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+         36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49],
+        [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17,
+         18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,
+         36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">position_embedding</span> <span class="o">=</span> <span class="n">pe</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">position_embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">position_embedding</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([2, 50, 32])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[-0.0659,  0.3402,  0.4823,  ...,  0.0778, -1.2551,  0.1716],
+         [-1.8011,  0.0123, -0.1828,  ..., -0.1942, -0.7024,  0.6973],
+         [ 0.2235, -1.4827,  0.3727,  ...,  0.9452,  2.1436,  0.4244],
+         ...,
+         [-0.1704,  0.2706, -0.5948,  ..., -1.7537, -0.5171,  1.7966],
+         [ 0.8878,  1.1431, -0.0761,  ..., -0.0164, -0.9832, -0.6537],
+         [ 0.0917, -0.4515,  0.7106,  ..., -0.0086, -1.1809,  0.0525]],
+
+        [[-0.0659,  0.3402,  0.4823,  ...,  0.0778, -1.2551,  0.1716],
+         [-1.8011,  0.0123, -0.1828,  ..., -0.1942, -0.7024,  0.6973],
+         [ 0.2235, -1.4827,  0.3727,  ...,  0.9452,  2.1436,  0.4244],
+         ...,
+         [-0.1704,  0.2706, -0.5948,  ..., -1.7537, -0.5171,  1.7966],
+         [ 0.8878,  1.1431, -0.0761,  ..., -0.0164, -0.9832, -0.6537],
+         [ 0.0917, -0.4515,  0.7106,  ..., -0.0086, -1.1809,  0.0525]]],
+       grad_fn=&lt;EmbeddingBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finally we add the word token embedding and position embedding to feed as input to the transformer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">input_to_transformer</span> <span class="o">=</span> <span class="n">embedded_input</span> <span class="o">+</span> <span class="n">position_embedding</span>
+<span class="n">input_to_transformer</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([2, 50, 32])
+</pre></div>
+</div>
+</div>
+</div>
+<p>We encoded the absolute position of each toke thus the name absolute positoinal embedding. However one drawback here is each position’s embedding is independent of the other. From a models perspective it will not know how far is position 500 from 2. To summarize position embedding should be monotonic. The more two tokens are closer to each other, they should influence each other.</p>
+<section id="relative-position-embedding">
+<h3>Relative Position embedding<a class="headerlink" href="#relative-position-embedding" title="Link to this heading">#</a></h3>
+<p>Relative position embedding leverages the distance between pairs of tokens. These techniques aler the attention mechanism. More about attention mechanism in the next chapter.</p>
+</section>
+</section>
+<section id="pre-training-data-engineering">
+<h2>Pre-training data engineering<a class="headerlink" href="#pre-training-data-engineering" title="Link to this heading">#</a></h2>
+<figure class="align-default" id="data-engineering">
+<a class="reference internal image-reference" href="../../_images/data_pipeline.png"><img alt="../../_images/data_pipeline.png" src="../../_images/data_pipeline.png" style="height: 350px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">Data Engineering pipeline</span><a class="headerlink" href="#data-engineering" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The typical approach is concat-and-chunk. They convert text datasets with variable document lengths into sequences with a fixed target length. First we randomly shuffle and concatenate all tokenized documents. Consequtive concatenated documents are separated by a special token ‘<EOT>’, allowing models to discover document boundaries. We then chunk the concatenated sequence into subsequences with a target sequence length. For example 2048 and 4096 for llama1 and llama2</p>
+<section id="data-sources">
+<h3>Data sources<a class="headerlink" href="#data-sources" title="Link to this heading">#</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Common datasources include The Pile, RefinedWeb, RedPajma and DOLMA.
+</pre></div>
+</div>
+</section>
+<section id="data-pipeline">
+<h3>Data pipeline<a class="headerlink" href="#data-pipeline" title="Link to this heading">#</a></h3>
+<p>Filtration, deduplication, diversifacation.</p>
+<ol class="arabic simple">
+<li><p>A classifier to classify a document as high quality or low quality. Then documents are passed through this classifier and only high quality documents are filtered.</p></li>
+<li><p>MinHashLSH techniques are used for deduplication. Deduplication is done with the document and across the documents.</p></li>
+<li><p>For diversification, other curated, tailored datasets are included.</p></li>
+</ol>
+</section>
+<section id="data-quality">
+<h3>Data quality<a class="headerlink" href="#data-quality" title="Link to this heading">#</a></h3>
+</section>
+<section id="data-bias">
+<h3>Data Bias<a class="headerlink" href="#data-bias" title="Link to this heading">#</a></h3>
+</section>
+<section id="privacy-and-eithical-cosiderations">
+<h3>Privacy and eithical cosiderations<a class="headerlink" href="#privacy-and-eithical-cosiderations" title="Link to this heading">#</a></h3>
+</section>
+<section id="synthetic-data-generation-through-llm">
+<h3>Synthetic data generation through LLM<a class="headerlink" href="#synthetic-data-generation-through-llm" title="Link to this heading">#</a></h3>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Microsoft Phi models were mostly trained on synthetic data.
+Cosmopedia a dataset consisting of synthetic textbooks, blog posts, stories, posts and WikiHow articles generated by Mixtral-8x7B-Instruct-v0.1. Has 30 million files and 25 billion tokens.
+</pre></div>
+</div>
+</section>
+</section>
+<section id="conclustion">
+<h2>Conclustion<a class="headerlink" href="#conclustion" title="Link to this heading">#</a></h2>
+</section>
+<section id="further-reading">
+<h2>Further Reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters/chapter1"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../../intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Learn Large Language Models Fast</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter2/chapter2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Chapter 2 - Transformer Architecture</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#no-frill-example">No frill example</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sample-text-corpus">A Sample Text corpus</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#structure-of-simplebooks">Structure of simplebooks</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization-pipeline">Tokenization Pipeline</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#normalization">Normalization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-tokenization">Pre-tokenization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenizer-models-dictionary-training">Tokenizer models - Dictionary Training</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#bye-pair-encoding">Bye pair encoding</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-processing">Post Processing</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#huggingface-libraries">HuggingFace Libraries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-custom-dictionary">Train a custom dictionary</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simple-books-pytorch-dataset">Simple Books Pytorch Dataset</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#word-embedding">Word embedding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#position-embedding">Position Embedding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#relative-position-embedding">Relative Position embedding</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-training-data-engineering">Pre-training data engineering</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-sources">Data sources</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-pipeline">Data pipeline</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-quality">Data quality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-bias">Data Bias</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#privacy-and-eithical-cosiderations">Privacy and eithical cosiderations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#synthetic-data-generation-through-llm">Synthetic data generation through LLM</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclustion">Conclustion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further Reading</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Gopi Subramanian
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
