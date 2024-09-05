@@ -7,8 +7,8 @@ chapters:
 - file: chapters/chapter1/chapter1.ipynb
 - file: chapters/chapter2/chapter2.ipynb
 - file: chapters/chapter3/chapter3.ipynb
-- file: chapters/chapter4.ipynb
-- file: chapters/chapter5.ipynb
+- file: chapters/chapter4/chapter4.ipynb
+- file: chapters/chapter5/chapter5.ipynb
 - file: chapters/chapter6.ipynb
 - file: chapters/chapter7.ipynb
 - file: chapters/chapter8.ipynb
