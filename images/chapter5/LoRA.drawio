@@ -1,0 +1,52 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5">
+  <diagram name="Page-1" id="AZQY2exVoxanxf0_Fp7f">
+    <mxGraphModel dx="1364" dy="843" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-1" value="Transformer Block 2" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="231" y="292" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-3" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=-180;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="430" y="292" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-5" value="" style="shape=trapezoid;perimeter=trapezoidPerimeter;whiteSpace=wrap;html=1;fixedSize=1;rotation=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="430" y="372" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-6" value="Input Tokens" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="230" y="742" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-7" value="Input Tokens" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="440" y="742" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-8" value="Token and Position&lt;div&gt;Embedding&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="230" y="642" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-9" value="Transformer Block 2" style="whiteSpace=wrap;html=1;aspect=fixed;fontSize=20;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="230" y="472" width="150" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-10" value="Transformer Output" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="230" y="242" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-11" value="Transformer Output" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="435" y="242" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-12" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.flowchart.summing_function;" vertex="1" parent="1">
+          <mxGeometry x="381" y="152" width="39" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="-Vq0lXTrixSAHGxXYVQu-10" target="-Vq0lXTrixSAHGxXYVQu-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="-Vq0lXTrixSAHGxXYVQu-11" target="-Vq0lXTrixSAHGxXYVQu-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-15" value="" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shape=mxgraph.basic.patternFillRect;fillStyle=diag;step=5;fillStrokeWidth=0.2;fillStrokeColor=#dddddd;" vertex="1" parent="1">
+          <mxGeometry x="290" y="90" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="-Vq0lXTrixSAHGxXYVQu-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="-Vq0lXTrixSAHGxXYVQu-12" target="-Vq0lXTrixSAHGxXYVQu-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
