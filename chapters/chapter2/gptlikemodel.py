@@ -58,13 +58,51 @@ class SingleHeadAttention(nn.Module):
         
         masked = attn_score.masked_fill(mask.bool(), -torch.inf)
         attn_weights = torch.softmax(masked / math.sqrt(k.shape[-1]), dim=1)
+        
         attn_weights = self.attn_drop(attn_weights)
 
         context_vector = attn_weights @ v
 
         return context_vector
     
-    
+class SingleHeadAttentionv1(nn.Module):
+    """
+    Implements weighted self attention
+    """
+    def __init__(self, config):
+
+        super().__init__()
+        self.Wq =  nn.Linear(config.d_model, config.d_head, bias=config.bias)
+        self.Wk =  nn.Linear(config.d_model, config.d_head, bias=config.bias)
+        self.Wv =  nn.Linear(config.d_model, config.d_head, bias=config.bias)
+
+        self.attn_drop = config.dropout
+        
+        self.__init_weights()
+
+    def __init_weights(self):
+
+        nn.init.xavier_uniform_(self.Wq.weight)
+        nn.init.xavier_uniform_(self.Wk.weight)
+        nn.init.xavier_uniform_(self.Wv.weight)
+
+    def forward(self, x, mask=None):
+
+        q = self.Wq(x)
+        k = self.Wk(x)
+        v = self.Wv(x)
+        
+        context_vector = F.scaled_dot_product_attention(
+                                query = q
+                               ,key   = k
+                               ,value = v
+                               ,attn_mask=None
+                               ,dropout_p=self.attn_drop
+                               ,is_causal=True, scale=None)
+
+
+
+        return context_vector
 class MultiHeadAttention(nn.Module):
     """
     Multihead Attention Implementation
@@ -88,7 +126,61 @@ class MultiHeadAttention(nn.Module):
         context_projected = self.projection_out(context_vector)
         return context_projected
 
-    
+class MultiHeadAttentionV1(nn.Module):
+    """
+    Multihead Attention Implementation
+    """
+    def __init__(self, config):
+        
+        super().__init__()
+
+        self.projection_out = nn.Linear(config.n_heads * config.d_head, config.d_head)    
+        
+        self.Wq =  nn.Linear(config.d_model, config.d_head * config.n_heads, bias=config.bias)
+        self.Wk =  nn.Linear(config.d_model, config.d_head * config.n_heads, bias=config.bias)
+        self.Wv =  nn.Linear(config.d_model, config.d_head * config.n_heads, bias=config.bias)
+
+        self.attn_drop  = config.dropout
+        self.n_heads    = config.n_heads
+        self.d_head     = config.d_head
+        self.__init_weights()
+
+
+    def __init_weights(self):
+
+        nn.init.xavier_uniform_(self.Wq.weight)
+        nn.init.xavier_uniform_(self.Wk.weight)
+        nn.init.xavier_uniform_(self.Wv.weight)
+
+
+    def forward(self, x):
+
+        batch, length, d = x.shape
+        is_causal = True
+        
+        if not self.train:
+            is_causal = False
+            self.attn_drop = 0.0
+        
+        q = self.Wq(x)
+        k = self.Wk(x)
+        v = self.Wv(x)
+        
+        q = q.view(batch, length, self.n_heads, self.d_head)
+        k = k.view(batch, length, self.n_heads, self.d_head)
+        v = v.view(batch, length, self.n_heads, self.d_head)
+
+        context_vector = F.scaled_dot_product_attention(
+                                query = q
+                               ,key   = k
+                               ,value = v
+                               ,attn_mask=None
+                               ,dropout_p=self.attn_drop
+                               ,is_causal=True, scale=None)
+
+        context_vector = context_vector.contiguous().view(batch, length, self.d_head * self.n_heads)
+        output = self.projection_out(context_vector)
+        return output
     
 class LayerNorm(nn.Module):
 
@@ -135,16 +227,33 @@ class TransformerBlock(nn.Module):
         x = x + self.mlp(self.ln2(x))
 
         return x
+
     
-    
-class SLLM(nn.Module):
+class TransformerBlockV1(nn.Module):
 
     def __init__(self, config):
         super().__init__()
 
+        self.ln1 = LayerNorm(config.d_model, bias=config.bias)
+        self.mha = MultiHeadAttentionV1(config)
+        self.ln2 = LayerNorm(config.d_head, bias=config.bias)
+        self.mlp = MLP(config)
+
+    def forward(self, x):
+
+        x = x + self.mha(self.ln1(x))
+        x = x + self.mlp(self.ln2(x))
+
+        return x
+
+class SLLM(nn.Module):
+
+    def __init__(self, config):
+        super().__init__()
+        
         self.token_embdgs = nn.Embedding(config.vocab_size, config.d_model)
         self.pos_embdgs   = nn.Embedding(config.context_window, config.d_model)
-        self.dropout       = nn.Dropout(config.dropout)
+        self.droput       = nn.Dropout(config.dropout)
 
         self.transformer_blocks = nn.ModuleList(
         [TransformerBlock(config) for _ in range(config.n_layers)]
@@ -158,9 +267,48 @@ class SLLM(nn.Module):
         token_embds = self.token_embdgs(x)
         pos_embds = self.pos_embdgs(torch.arange(seq_length, device=x.device))
         x = token_embds + pos_embds
-        x = self.dropout(x)
-        for module in self.transformer_blocks:
-            x = module(x)
+        x = self.droput(x)
+
+        for block in self.transformer_blocks:
+            x = block(x)
         x = self.final_norm(x)
         logits = self.out_head(x)
-        return logits
+        return logits 
+    
+class EmbeddingsBlock(nn.Module):
+    """
+    
+    """
+    def __init__(self, config):
+        super().__init__()
+        self.token_embdgs = nn.Embedding(config.vocab_size, config.d_model)
+        self.pos_embdgs   = nn.Embedding(config.context_window, config.d_model)
+        self.droput       = nn.Dropout(config.dropout)
+    
+    def forward(self, x):
+        token_embds = self.token_embdgs(x)
+        pos_embds = self.pos_embds(torch.arange(seq_length, device=x.device))
+        x = token_embds + pos_embds
+        x = self.dropout(x)
+        return x
+
+class SLLMv1(nn.Module):
+
+    def __init__(self, config):
+        super().__init__()
+
+        self.embedding_block    = EmbeddingsBlock(config)
+        self.transformer_blocks = nn.ModuleList(
+        [TransformerBlockV1(config) for _ in range(config.n_layers)]
+        )
+        self.final_norm = LayerNorm(config.d_head)
+        self.out_head = nn.Linear(config.d_head, config.vocab_size)
+
+    def forward(self, x):
+
+        batch_size, seq_length = x.shape
+        x = self.embedding_block(x)
+        x = self.transformer_blocks(x)
+        x = self.final_norm(x)
+        logits = self.out_head(x)
+        return logits 

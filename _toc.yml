@@ -4,14 +4,17 @@
 format: jb-book
 root: intro
 chapters:
-- file: chapters/chapter1/chapter1.ipynb
-- file: chapters/chapter2/chapter2.ipynb
-- file: chapters/chapter3/chapter3.ipynb
-- file: chapters/chapter4/chapter4.ipynb
-- file: chapters/chapter5/chapter5.ipynb
-- file: chapters/chapter6.ipynb
-- file: chapters/chapter7.ipynb
-- file: chapters/chapter8.ipynb
-- file: chapters/chapter9.ipynb
-- file: chapters/chapter10.ipynb
+    - file: chapters/Introduction.ipynb
+    - file: chapters/llm-introduction.ipynb
+    - file: chapters/torch-intro.ipynb
+    - file: chapters/chapter1/chapter1.ipynb
+    - file: chapters/chapter2/chapter2.ipynb
+    - file: chapters/chapter3/chapter3.ipynb
+    - file: chapters/chapter4/chapter4.ipynb
+    - file: chapters/chapter5/chapter5.ipynb
+    - file: chapters/chapter6/chapter6.ipynb
+    - file: chapters/chapter7/chapter7.ipynb
+    - file: chapters/chapter8/chapter8.ipynb
+    - file: chapters/Appendix-A.ipynb
+
 
